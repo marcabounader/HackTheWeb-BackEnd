@@ -22,7 +22,7 @@ services:
         context: ./database_admin
         dockerfile: Dockerfile
     ports:
-      - 127.0.0.1:81:80
+      - 127.0.0.1::80
     networks:
       - datanet   
 
@@ -36,8 +36,8 @@ services:
         context: ./www
         dockerfile: Dockerfile
     ports:
-      - 127.0.0.1:80:80
-      - 127.0.0.1:443:443
+      - 127.0.0.1::80
+      - 127.0.0.1::443
     networks:
       - datanet
       - ldapnet
@@ -52,7 +52,7 @@ services:
       - ldap_data:/var/lib/ldap
       - ldap_config:/etc/ldap/slapd.d
     ports:
-      - 127.0.0.1:389:389
+      - 127.0.0.1::389
     networks:
       - ldapnet
 
@@ -65,7 +65,7 @@ services:
         context: ./ldap_admin          
         dockerfile: Dockerfile
     ports:
-      - 127.0.0.1:82:80
+      - 127.0.0.1::80
     networks:
       - ldapnet
 
