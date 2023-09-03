@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DockerController;
@@ -23,5 +24,10 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('refresh', 'refresh');
 });
 
-Route::post('/run-docker-command', [DockerController::class, 'runCommand']);
+Route::group(["prefix" => "docker", "middleware" => "auth:api"], function () {
+    Route::controller(DockerController::class)->group(function () {
+        Route::post('/run-docker-instance', 'runInstanceForUser');
+    });
+
+});
 
