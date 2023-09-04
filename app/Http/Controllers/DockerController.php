@@ -11,7 +11,6 @@ class DockerController extends Controller
     {
         $command = "docker inspect --format=\"{{(index (index .NetworkSettings.Ports \\\"80/tcp\\\") 0).HostPort}}\" $containerName 2>&1";
         exec($command, $output, $exitCode);
-        echo $command;
         if ($exitCode === 0) {
             return (int)$output[0];
         }else {
@@ -81,6 +80,8 @@ class DockerController extends Controller
             networks:
               - datanet
               - ldapnet
+            environment:
+              - SECRET_KEY=marc
         
           directory:
             container_name: directory-$user_id
@@ -108,7 +109,24 @@ class DockerController extends Controller
               - 127.0.0.1::80
             networks:
               - ldapnet
-        
+              
+          www2:
+              container_name: www-2-$user_id
+              depends_on:
+                - database
+                - directory
+              image: webpwnized/mutillidae
+              build:
+                  context: ../../../../storage/mutillidae-docker-master/www2
+                  dockerfile: Dockerfile
+              ports:
+                - 127.0.0.1::80
+                - 127.0.0.1::443
+              networks:
+                - datanet
+                - ldapnet
+              environment:
+              - FLAG=marc
         # Volumes to persist data used by the LDAP server
         volumes:
           ldap_data:
