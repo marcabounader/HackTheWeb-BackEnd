@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class CompletedLab extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'lab_id'
+    ];
+
     public $timestamps = false;
 
 }
