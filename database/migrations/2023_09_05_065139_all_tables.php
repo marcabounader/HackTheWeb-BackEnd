@@ -16,12 +16,17 @@ return new class extends Migration
             $table->string('name');
         });
 
+        Schema::create('lab_difficulties', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+        });
+
         Schema::create('labs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('difficulty_id');
             $table->string('name');
             $table->string('objective');
-            $table->string('difficulty');
             $table->string('launch_api');
             $table->integer('score');
             $table->foreign('category_id')->references('id')->on('lab_categories');
