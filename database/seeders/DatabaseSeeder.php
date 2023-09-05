@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use App\Models\BadgeCategory;
 use App\Models\LabCategory;
 use App\Models\LabDifficulty;
+use App\Models\User;
 use App\Models\UserType;
 use Illuminate\Database\Seeder;
 
@@ -30,5 +31,8 @@ class DatabaseSeeder extends Seeder
         LabDifficulty::create(['difficulty' => 'Hard']);
         LabDifficulty::create(['difficulty' => 'Medium']);
         LabDifficulty::create(['difficulty' => 'Easy']);
+
+        User::create(['name' => 'admin', 'email' => "admin@admin.com", "password" => "adminadmin", "type_id" => "1"]);
+
     }
 }
