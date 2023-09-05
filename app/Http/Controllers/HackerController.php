@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ActiveLab;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -144,7 +145,8 @@ class HackerController extends Controller
                 'user_id' => Auth::id(),
                 'lab_id' => $lab_id,
                 'flag' => $randomFlag,
-                'project_name' => $project_name
+                'project_name' => $project_name,
+                'port' => $portNumber
             ]);
 
             return response()->json([
@@ -162,7 +164,7 @@ class HackerController extends Controller
         }
     }
     
-    public function stopInstanceForUser($project_name)
+    public function stopUserLab($project_name)
     {
         $user_id = Auth::id();
         $project_name = "{$project_name}_{$user_id}";
@@ -203,5 +205,42 @@ class HackerController extends Controller
             ]);
         }
     }
+
+    public function getActiveLabs()
+    {
+        try {
+            $user_id = Auth::id();
+            $active_labs = ActiveLab::where("user_id", $user_id)
+            ->with('activeLabInfo') // Select specific columns from activeLabInfo
+            ->get(['id','lab_id', 'project_name', 'launch_time' ,'port']);
+            
+            if ($active_labs->isEmpty()) {
+                return response()->json([
+                    'message' => 'No active labs'
+                ], 404);
+            } else {
+                $active_labs = $active_labs->map(function ($item) {
+                    $item->id=$item->lab_id;
+                    $item->category_id = $item->activeLabInfo->category_id;
+                    $item->difficulty_id = $item->activeLabInfo->difficulty_id;
+                    $item->name = $item->activeLabInfo->name;
+                    $item->objective = $item->activeLabInfo->objective;
+                    $item->score = $item->activeLabInfo->score;
+
+                    unset($item->activeLabInfo); // Remove the activeLabInfo key
+                    return $item;
+                });
+                return response()->json([
+                    'message' => 'Active labs found',
+                    "active_labs" => $active_labs
+                ], 200);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+    
     
 }

@@ -39,8 +39,8 @@ Route::group(["middleware" => "auth:api"], function () {
     });
     Route::group(["prefix" => "hacker", "middleware" => "valid.normal"], function () {
         Route::controller(HackerController::class)->group(function () {
-            Route::post('/run-sqli-instance', 'runSqliForUser');
-            Route::delete('/stop-user-instance/{project_name}', 'stopInstanceForUser');
+            Route::post('/run-sqli-lab', 'runSqliForUser');
+            Route::delete('/stop-user-lab/{project_name}', 'stopUserLab');
             Route::get('/get-active-labs', 'getActiveLabs');
 
         });

@@ -39,6 +39,7 @@ return new class extends Migration
             $table->unsignedBigInteger('lab_id');
             $table->string('flag');
             $table->string('project_name');
+            $table->integer('port');
             $table->timestamp('launch_time')->useCurrent();
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('lab_id')->references('id')->on('labs');

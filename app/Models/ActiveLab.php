@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class ActiveLab extends Model
 {
@@ -14,7 +16,12 @@ class ActiveLab extends Model
         'user_id',
         'lab_id',
         'flag',
-        'project_name'
+        'project_name',
+        'port'
     ];
+
+    public function activeLabInfo() : BelongsTo {
+        return $this->belongsTo(Lab::class,"lab_id","id");
+    }
 
 }
