@@ -162,10 +162,10 @@ class HackerController extends Controller
         }
     }
     
-    public function stopSqliForUser($project_name)
+    public function stopInstanceForUser($project_name)
     {
         $user_id = Auth::id();
-    
+        $project_name = "{$project_name}_{$user_id}";
         // Path to the user's Docker Compose file
         $userDockerDir = storage_path("mutillidae-docker-master/user-instances/$user_id");
         $dockerComposeFile = "$userDockerDir/docker-compose.yml";
