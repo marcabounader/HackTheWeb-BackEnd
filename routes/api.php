@@ -34,12 +34,15 @@ Route::controller(AuthController::class)->group(function () {
 Route::group(["middleware" => "auth:api"], function () {
     Route::group(["prefix" => "common"], function () {
         Route::controller(CommonController::class)->group(function () {
+            Route::get('/get-labs','getLabs');
         });
     });
     Route::group(["prefix" => "hacker", "middleware" => "valid.normal"], function () {
         Route::controller(HackerController::class)->group(function () {
             Route::post('/run-sqli-instance', 'runSqliForUser');
             Route::post('/stop-sqli-instance', 'stopSqliForUser');
+            Route::get('/get-running-labs', 'stopSqliForUser');
+
         });
     });
     Route::group(["prefix" => "admin", "middleware" => "valid.admin"], function () {
