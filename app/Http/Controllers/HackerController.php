@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\ActiveLab;
+use App\Models\CompletedLab;
+use App\Models\Lab;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -233,6 +236,56 @@ class HackerController extends Controller
                 return response()->json([
                     'message' => 'Active labs found',
                     "active_labs" => $active_labs
+                ], 200);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+    
+    public function submitFlag(Request $request)
+    {
+        try {
+            $user_id = Auth::id();
+            $user = Auth::user();
+            $submitted_flag = $request->flag;
+            $id = $request->id;
+            
+            $flag = ActiveLab::where([
+                ["lab_id", '=', $id],
+                ["flag", '=', $submitted_flag],
+                ["user_id", '=', $user_id]
+            ])->first();
+            
+            if (!$flag) {
+                return response()->json([
+                    'message' => 'Flag incorrect'
+                ], 404);
+            } else {
+                $completed_lab = CompletedLab::create([
+                    'user_id' => Auth::id(),
+                    'lab_id' => $id
+                ]);
+    
+                $lab = Lab::find($id); // Use find instead of where to retrieve a single lab by its primary key
+    
+                // Check if the lab was found
+                if (!$lab) {
+                    return response()->json([
+                        'message' => 'Lab not found'
+                    ], 404);
+                }
+    
+                $new_score = $user->score + $lab->score; // Calculate the new score
+    
+                // Update the user's score
+                $user->update(['score' => $new_score]);
+    
+                return response()->json([
+                    'message' => 'Flag is correct',
+                    'completed_lab' => $lab
                 ], 200);
             }
         } catch (Exception $e) {
