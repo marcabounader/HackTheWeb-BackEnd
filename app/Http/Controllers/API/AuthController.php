@@ -19,7 +19,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => 'required|string|email',
-            'password' => 'required|string',
+            'password' => 'required|string'
         ]);
         $credentials = $request->only('email', 'password');
         $token = Auth::attempt($credentials);
