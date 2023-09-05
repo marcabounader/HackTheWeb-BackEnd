@@ -25,9 +25,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('difficulty_id');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('objective');
-            $table->string('launch_api');
+            $table->string('launch_api')->unique();
             $table->integer('score');
             $table->foreign('category_id')->references('id')->on('lab_categories');
             $table->foreign('difficulty_id')->references('id')->on('lab_difficulties');
@@ -37,6 +37,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('lab_id');
+            $table->unique(['user_id', 'lab_id']);
             $table->string('flag');
             $table->string('project_name');
             $table->integer('port');
@@ -51,6 +52,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('lab_id');
             $table->timestamp('complete_time')->useCurrent();
+            $table->unique(['user_id', 'lab_id']);
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('lab_id')->references('id')->on('labs');
         });
@@ -73,6 +75,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('badge_id');
+            $table->unique(['user_id', 'badge_id']);
+
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('badge_id')->references('id')->on('badges');
 
