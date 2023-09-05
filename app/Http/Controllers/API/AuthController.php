@@ -33,11 +33,8 @@ class AuthController extends Controller
         $user = Auth::user();
         return response()->json([
             'user' => $user,
-            'authorization' => [
-                'token' => $token,
-                'type' => 'bearer',
-            ]
-        ]);
+            'token' => $token
+        ],200);
     }
 
     public function register(Request $request)
@@ -52,12 +49,13 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'type_id' => "3"
         ]);
 
         return response()->json([
             'message' => 'User created successfully',
             'user' => $user
-        ]);
+        ],200);
     }
 
     public function logout()
@@ -65,17 +63,18 @@ class AuthController extends Controller
         Auth::logout();
         return response()->json([
             'message' => 'Successfully logged out',
-        ]);
+        ],200);
     }
 
     public function refresh()
     {
         return response()->json([
+            'status' => 200,
             'user' => Auth::user(),
             'authorisation' => [
                 'token' => Auth::refresh(),
                 'type' => 'bearer',
             ]
-        ]);
+        ],200);
     }
 }
