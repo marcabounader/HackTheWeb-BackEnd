@@ -30,9 +30,12 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $user = Auth::user();
+        $user = Auth::user(); 
+        $userRank = $user->rank();
+
         return response()->json([
             'user' => $user,
+            'rank' => $userRank,
             'token' => $token
         ],200);
     }
