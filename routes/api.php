@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\CommonController;
+use App\Http\Controllers\HackerController;
 use App\Http\Controllers\UnauthorizedController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,15 +32,20 @@ Route::controller(AuthController::class)->group(function () {
 
 
 Route::group(["middleware" => "auth:api"], function () {
-
+    Route::group(["prefix" => "common"], function () {
+        Route::controller(CommonController::class)->group(function () {
+        });
+    });
     Route::group(["prefix" => "hacker", "middleware" => "valid.normal"], function () {
-        Route::controller(DockerController::class)->group(function () {
+        Route::controller(HackerController::class)->group(function () {
             Route::post('/run-sqli-instance', 'runSqliForUser');
-            Route::post('/stop-user-instance', 'stopInstanceForUser');
+            Route::post('/stop-sqli-instance', 'stopSqliForUser');
         });
     });
     Route::group(["prefix" => "admin", "middleware" => "valid.admin"], function () {
-
+        Route::controller(AdminController::class)->group(function () {
+            Route::post('/add-lab','addLab');
+        });
     });
 });
 

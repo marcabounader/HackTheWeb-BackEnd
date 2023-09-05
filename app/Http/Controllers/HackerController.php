@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class DockerController extends Controller
+class HackerController extends Controller
 {
     private function getPortNumberFromContainer($containerName)
     {
@@ -27,7 +27,7 @@ class DockerController extends Controller
     {
         $user_id=Auth::id();
 
-        $projectName = "mutillidae_user_{$user_id}";
+        $projectName = "mutillidae_sqli_{$user_id}";
 
         $userDockerDir = storage_path("mutillidae-docker-master/user-instances/$user_id");
         if (!file_exists($userDockerDir)) {
@@ -133,7 +133,7 @@ class DockerController extends Controller
         
         // Check the exit code to determine if the command was successful
         if ($exitCode === 0) {
-            $containerName="www-$user_id";
+            $containerName="www-sqli-$user_id";
             $portNumber = $this->getPortNumberFromContainer($containerName);
 
     
@@ -151,10 +151,10 @@ class DockerController extends Controller
         }
     }
     
-    public function stopInstanceForUser(Request $request)
+    public function stopSqliForUser(Request $request)
     {
         $user_id = Auth::id();
-        $projectName = "mutillidae_user_{$user_id}";
+        $projectName = "mutillidae_sqli_{$user_id}";
 
         // Path to the user's Docker Compose file
         $userDockerDir = storage_path("mutillidae-docker-master/user-instances/$user_id");
@@ -177,7 +177,4 @@ class DockerController extends Controller
                 'output' => $output, // Capture the command output
             ]);
         }
-    }
-
-
-}
+    }}
