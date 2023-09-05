@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('lab_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('category');
         });
 
         Schema::create('lab_difficulties', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('difficulty');
         });
 
         Schema::create('labs', function (Blueprint $table) {
@@ -56,7 +56,7 @@ return new class extends Migration
 
         Schema::create('badge_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('category');
         });
 
         Schema::create('badges', function (Blueprint $table) {

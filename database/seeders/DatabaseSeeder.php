@@ -16,19 +16,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        UserType::create(['name' => 'Admin']);
-        UserType::create(['name' => 'ContentEditor']);
-        UserType::create(['name' => 'Normal']);
+        UserType::create(['type' => 'Admin']);
+        UserType::create(['type' => 'ContentEditor']);
+        UserType::create(['type' => 'Normal']);
 
-        LabCategory::create(['name' => 'SQLi']);
-        LabCategory::create(['name' => 'XSS']);
+        LabCategory::create(['category' => 'SQLi']);
+        LabCategory::create(['category' => 'XSS']);
 
-        BadgeCategory::create(['name' => 'Gold']);
-        BadgeCategory::create(['name' => 'Silver']);
-        BadgeCategory::create(['name' => 'Bronze']);
+        BadgeCategory::create(['category' => 'Gold']);
+        BadgeCategory::create(['category' => 'Silver']);
+        BadgeCategory::create(['category' => 'Bronze']);
 
-        LabDifficulty::create(['name' => 'Hard']);
-        LabDifficulty::create(['name' => 'Medium']);
-        LabDifficulty::create(['name' => 'Easy']);
+        LabDifficulty::create(['difficulty' => 'Hard']);
+        LabDifficulty::create(['difficulty' => 'Medium']);
+        LabDifficulty::create(['difficulty' => 'Easy']);
     }
 }
