@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('launch_api');
             $table->integer('score');
             $table->foreign('category_id')->references('id')->on('lab_categories');
+            $table->foreign('difficulty_id')->references('id')->on('lab_difficulties');
 
         });
         Schema::create('active_labs', function (Blueprint $table) {
