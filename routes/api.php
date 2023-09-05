@@ -26,7 +26,9 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::group(["prefix" => "docker", "middleware" => "auth:api"], function () {
     Route::controller(DockerController::class)->group(function () {
-        Route::post('/run-docker-instance', 'runInstanceForUser');
+        Route::post('/run-sqli-instance', 'runSqliForUser');
+        Route::post('/stop-user-instance', 'stopInstanceForUser');
+
     });
 
 });

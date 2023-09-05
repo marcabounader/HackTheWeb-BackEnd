@@ -23,7 +23,7 @@ class DockerController extends Controller
             return null; // Port number not found
         }
     }
-    public function runInstanceForUser(Request $request)
+    public function runSqliForUser(Request $request)
     {
         $user_id=Auth::id();
 
@@ -51,6 +51,7 @@ class DockerController extends Controller
                 dockerfile: Dockerfile
             networks:
               - datanet   
+            stop_grace_period: 1m
         
           database_admin:
             container_name: database_admin-$user_id
@@ -64,24 +65,7 @@ class DockerController extends Controller
               - 127.0.0.1::80
             networks:
               - datanet   
-        
-          www:
-            container_name: www-$user_id
-            depends_on:
-              - database
-              - directory
-            image: webpwnized/mutillidae:www
-            build:
-                context: ./www
-                dockerfile: Dockerfile
-            ports:
-              - 127.0.0.1::80
-              - 127.0.0.1::443
-            networks:
-              - datanet
-              - ldapnet
-            environment:
-              - SECRET_KEY=marc
+            stop_grace_period: 1m
         
           directory:
             container_name: directory-$user_id
@@ -96,6 +80,7 @@ class DockerController extends Controller
               - 127.0.0.1::389
             networks:
               - ldapnet
+            stop_grace_period: 1h
         
           directory_admin:
             container_name: directory_admin-$user_id
@@ -109,15 +94,16 @@ class DockerController extends Controller
               - 127.0.0.1::80
             networks:
               - ldapnet
+            stop_grace_period: 1h
               
-          www2:
-              container_name: www-2-$user_id
+          www-sqli:
+              container_name: www-sqli-$user_id
               depends_on:
                 - database
                 - directory
-              image: webpwnized/mutillidae
+              image: webpwnized/mutillidae:www-sqli
               build:
-                  context: ../../../../storage/mutillidae-docker-master/www2
+                  context: ../../../../storage/mutillidae-docker-master/www-sqli
                   dockerfile: Dockerfile
               ports:
                 - 127.0.0.1::80
@@ -127,6 +113,7 @@ class DockerController extends Controller
                 - ldapnet
               environment:
               - FLAG=marc
+              stop_grace_period: 1h
         # Volumes to persist data used by the LDAP server
         volumes:
           ldap_data:
@@ -163,5 +150,34 @@ class DockerController extends Controller
             ]);
         }
     }
+    
+    public function stopInstanceForUser(Request $request)
+    {
+        $user_id = Auth::id();
+        $projectName = "mutillidae_user_{$user_id}";
+
+        // Path to the user's Docker Compose file
+        $userDockerDir = storage_path("mutillidae-docker-master/user-instances/$user_id");
+        $dockerComposeFile = "$userDockerDir/docker-compose.yml";
+
+        // Stop and remove containers using docker-compose
+        $command = "docker-compose -f $dockerComposeFile -p $projectName down 2>&1";
+        exec($command, $output, $exitCode);
+
+        // Check the exit code to determine if the command was successful
+        if ($exitCode === 0) {
+            return response()->json([
+                'message' => "Instance stopped for user ID {$user_id}",
+                'output' => $output, // Capture the command output
+            ]);
+        } else {
+            // The command encountered an error
+            return response()->json([
+                'message' => "Error stopping instance for user ID {$user_id}",
+                'output' => $output, // Capture the command output
+            ]);
+        }
+    }
+
 
 }
