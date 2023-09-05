@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActiveLab;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class HackerController extends Controller
 {
@@ -26,15 +28,16 @@ class HackerController extends Controller
     public function runSqliForUser(Request $request)
     {
         $user_id=Auth::id();
-
-        $projectName = "mutillidae_sqli_{$user_id}";
-
+        $lab_id=$request->lab_id;
+        $project_name = "mutillidae_sqli_{$user_id}";
+        
         $userDockerDir = storage_path("mutillidae-docker-master/user-instances/$user_id");
         if (!file_exists($userDockerDir)) {
             mkdir($userDockerDir, 0755, true);
         }
 
         $dockerComposeFile = "$userDockerDir/docker-compose.yml";
+        $randomFlag = Str::random(20);
 
         $dockerComposeContent = "
         # Documentation: https://github.com/compose-spec/compose-spec/blob/master/spec.md
@@ -112,7 +115,7 @@ class HackerController extends Controller
                 - datanet
                 - ldapnet
               environment:
-              - FLAG=marc
+              - FLAG= $randomFlag
               stop_grace_period: 1h
         # Volumes to persist data used by the LDAP server
         volumes:
@@ -127,7 +130,7 @@ class HackerController extends Controller
 
         file_put_contents($dockerComposeFile,$dockerComposeContent);
         //build command
-        $command = "docker-compose -f $dockerComposeFile -p $projectName up -d 2>&1";
+        $command = "docker-compose -f $dockerComposeFile -p $project_name up -d 2>&1";
         exec($command, $output, $exitCode);
 
         
@@ -136,10 +139,18 @@ class HackerController extends Controller
             $containerName="www-sqli-$user_id";
             $portNumber = $this->getPortNumberFromContainer($containerName);
 
-    
+            //Add active lab
+            $active = ActiveLab::create([
+                'user_id' => Auth::id(),
+                'lab_id' => $lab_id,
+                'flag' => $randomFlag,
+                'project_name' => $project_name
+            ]);
+
             return response()->json([
                 'message' => "Instance started for user ID {$user_id}",
                 'port_number' => $portNumber,
+                'active_lab' => $active,
                 'output' => $output, // Capture the command output
             ]);
         } else {
@@ -151,25 +162,39 @@ class HackerController extends Controller
         }
     }
     
-    public function stopSqliForUser(Request $request)
+    public function stopSqliForUser($project_name)
     {
         $user_id = Auth::id();
-        $projectName = "mutillidae_sqli_{$user_id}";
-
+    
         // Path to the user's Docker Compose file
         $userDockerDir = storage_path("mutillidae-docker-master/user-instances/$user_id");
         $dockerComposeFile = "$userDockerDir/docker-compose.yml";
-
+    
         // Stop and remove containers using docker-compose
-        $command = "docker-compose -f $dockerComposeFile -p $projectName down 2>&1";
+        $command = "docker-compose -f $dockerComposeFile -p $project_name down 2>&1";
         exec($command, $output, $exitCode);
-
+    
         // Check the exit code to determine if the command was successful
         if ($exitCode === 0) {
-            return response()->json([
-                'message' => "Instance stopped for user ID {$user_id}",
-                'output' => $output, // Capture the command output
-            ]);
+            // Find the associated ActiveLab instance by project_name
+            $activeLab = ActiveLab::where('project_name', $project_name)->first();
+    
+            if (!$activeLab) {
+                return response()->json([
+                    'message' => 'Lab instance not found'
+                ], 404);
+            }
+    
+            // Delete the found ActiveLab instance
+            if ($activeLab->delete()) {
+                return response()->json([
+                    'message' => "Lab instance stopped for user ID {$user_id}",
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'Failed to delete lab instance'
+                ], 500);
+            }
         } else {
             // The command encountered an error
             return response()->json([
@@ -177,4 +202,6 @@ class HackerController extends Controller
                 'output' => $output, // Capture the command output
             ]);
         }
-    }}
+    }
+    
+}
