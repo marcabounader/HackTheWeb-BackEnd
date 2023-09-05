@@ -2,6 +2,9 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\ValidateAdmin;
+use App\Http\Middleware\ValidateContentEditor;
+use App\Http\Middleware\ValidateNormal;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -53,6 +56,9 @@ class Kernel extends HttpKernel
      * @var array<string, class-string|string>
      */
     protected $middlewareAliases = [
+        'valid.admin' => ValidateAdmin::class,
+        'valid.content.editor'=>ValidateContentEditor::class,
+        'valid.normal'=>ValidateNormal::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
