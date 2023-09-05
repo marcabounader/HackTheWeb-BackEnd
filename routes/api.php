@@ -40,8 +40,8 @@ Route::group(["middleware" => "auth:api"], function () {
     Route::group(["prefix" => "hacker", "middleware" => "valid.normal"], function () {
         Route::controller(HackerController::class)->group(function () {
             Route::post('/run-sqli-instance', 'runSqliForUser');
-            Route::delete('/stop-sqli-instance/{project_name}', 'stopSqliForUser');
-            Route::get('/get-running-labs', 'stopSqliForUser');
+            Route::delete('/stop-user-instance/{project_name}', 'stopInstanceForUser');
+            Route::get('/get-active-labs', 'getActiveLabs');
 
         });
     });
