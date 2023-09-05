@@ -252,23 +252,30 @@ class HackerController extends Controller
             $user = Auth::user();
             $submitted_flag = $request->flag;
             $id = $request->id;
+            $userDockerDir = storage_path("mutillidae-docker-master/user-instances/$user_id");
+            $dockerComposeFile = "$userDockerDir/docker-compose.yml";
             
-            $flag = ActiveLab::where([
+            $active_lab = ActiveLab::where([
                 ["lab_id", '=', $id],
                 ["flag", '=', $submitted_flag],
                 ["user_id", '=', $user_id]
             ])->first();
             
-            if (!$flag) {
+            if (!$active_lab) {
                 return response()->json([
                     'message' => 'Flag incorrect'
                 ], 404);
             } else {
+
+
                 $completed_lab = CompletedLab::create([
                     'user_id' => Auth::id(),
                     'lab_id' => $id
                 ]);
-    
+                $project_name=$active_lab->project_name;
+                $command = "docker-compose -f $dockerComposeFile -p $project_name down 2>&1";
+                exec($command, $output, $exitCode);
+
                 $lab = Lab::find($id); // Use find instead of where to retrieve a single lab by its primary key
     
                 // Check if the lab was found
