@@ -119,7 +119,7 @@ class HackerController extends Controller
                 - datanet
                 - ldapnet
               environment:
-              - FLAG= $randomFlag
+              - FLAG= flag-{$randomFlag}
               stop_grace_period: 1h
         # Volumes to persist data used by the LDAP server
         volumes:
