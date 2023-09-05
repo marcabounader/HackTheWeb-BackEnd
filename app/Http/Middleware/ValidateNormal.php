@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Controllers\UnauthorizedController;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,6 +22,6 @@ class ValidateNormal
             return $next($request);
         }
 
-        return redirect()->route("unauthorized");
+        return redirect()->action([UnauthorizedController::class, "unauthorized"]);
     }
 }

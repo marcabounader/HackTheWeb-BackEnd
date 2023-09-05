@@ -21,6 +21,6 @@ class ValidateAdmin
             return $next($request);
         }
 
-        return redirect()->route("unauthorized");
+        return redirect()->action([UnauthorizedController::class, "unauthorized"]);
     }
 }
