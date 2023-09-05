@@ -8,7 +8,6 @@ class UnauthorizedController extends Controller
 {
     public function unauthorized(){
         return response()->json([
-            'status' => 'Error',
             'message' => 'Unauthorized',
         ], 401);
     }
