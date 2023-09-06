@@ -394,5 +394,30 @@ class AdminController extends Controller
         }
     }
 
+    public function deleteBadgeCategory($id)
+    {
+        try {
+            $category = BadgeCategory::find($id);
 
+            if (!$category) {
+                return response()->json([
+                    'message' => 'Badge category not found'
+                ], 404);
+            }
+
+            if ($category->delete()) {
+                return response()->json([
+                    'message' => 'Badge category deleted'
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'Failed to delete badge category'
+                ], 500);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
