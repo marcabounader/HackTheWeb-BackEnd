@@ -60,7 +60,7 @@ Route::group(["middleware" => "auth:api"], function () {
             Route::delete('/delete-lab-category/{id}','deleteLabCategory');
             Route::get('/get-lab-difficulties','getLabDifficulties');
             Route::post('/add-lab-difficulty','addLabDifficulty');
-            Route::delete('/delete-lab-difficulty/{id}','deleteDifficulty');
+            Route::delete('/delete-lab-difficulty/{id}','deleteLabDifficulty');
             Route::get('/get-badge-categories','getBadgeCategories');
             Route::post('/add-badge-category','addBadgeCategory');
             Route::delete('/delete-badge-category/{id}','deleteBadgeCategory');

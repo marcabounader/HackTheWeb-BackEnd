@@ -21,8 +21,8 @@ class DatabaseSeeder extends Seeder
         UserType::create(['type' => 'ContentEditor']);
         UserType::create(['type' => 'Normal']);
 
-        LabCategory::create(['category' => 'SQLi']);
-        LabCategory::create(['category' => 'XSS']);
+        LabCategory::create(['category' => 'Injection']);
+        LabCategory::create(['category' => 'Server-Side Request Forgery']);
 
         BadgeCategory::create(['category' => 'Gold']);
         BadgeCategory::create(['category' => 'Silver']);

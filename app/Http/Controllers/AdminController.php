@@ -200,7 +200,7 @@ class AdminController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'name' => 'required|string|unique:lab_categories',
+                'category' => 'required|string|unique:lab_categories',
             ]);
 
             if ($validator->fails()) {
@@ -211,7 +211,7 @@ class AdminController extends Controller
             }
 
             $category = new LabCategory;
-            $category->name = $request->name;
+            $category->category = $request->category;
 
             if ($category->save()) {
                 return response()->json([
@@ -282,7 +282,7 @@ class AdminController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'name' => 'required|string|unique:lab_difficulties',
+                'difficulty' => 'required|string|unique:lab_difficulties',
             ]);
 
             if ($validator->fails()) {
@@ -293,7 +293,7 @@ class AdminController extends Controller
             }
 
             $difficulty = new LabDifficulty;
-            $difficulty->name = $request->name;
+            $difficulty->difficulty = $request->difficulty;
 
             if ($difficulty->save()) {
                 return response()->json([
@@ -364,7 +364,7 @@ class AdminController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'name' => 'required|string|unique:badge_categories',
+                'category' => 'required|string|unique:badge_categories',
             ]);
 
             if ($validator->fails()) {
@@ -375,7 +375,7 @@ class AdminController extends Controller
             }
 
             $category = new BadgeCategory;
-            $category->name = $request->name;
+            $category->category = $request->category;
 
             if ($category->save()) {
                 return response()->json([
