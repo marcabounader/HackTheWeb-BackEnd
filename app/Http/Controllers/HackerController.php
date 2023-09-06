@@ -231,7 +231,7 @@ class HackerController extends Controller
                     $lab->name = $lab->activeLabInfo->name;
                     $lab->objective = $lab->activeLabInfo->objective;
                     $lab->score = $lab->activeLabInfo->score;
-
+                    $lab->icon_url = $lab->activeLabInfo->icon_url;
                     unset($lab->activeLabInfo); // Remove the activeLabInfo key
                     return $lab;
                 });
@@ -270,6 +270,8 @@ class HackerController extends Controller
                         $lab->name = $lab->completedLabInfo->name;
                         $lab->objective = $lab->completedLabInfo->objective;
                         $lab->score = $lab->completedLabInfo->score;
+                        $lab->icon_url = $lab->activeLabInfo->icon_url;
+
                     }
     
                     unset($lab->completedLabInfo); // Remove the completedLabInfo key

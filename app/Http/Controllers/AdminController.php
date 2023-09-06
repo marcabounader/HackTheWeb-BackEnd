@@ -25,6 +25,30 @@ class AdminController extends Controller
             $lab->objective=$request->objective;
             $lab->launch_api=$request->launch_api;
             $lab->score=$request->score;
+            $base64Image = $request->input('icon');
+            $binaryData = base64_decode($base64Image);
+
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mimeType = finfo_buffer($finfo, $binaryData);
+            finfo_close($finfo);
+            $allowedMimeTypes = ['image/jpeg','image/jpg', 'image/png', 'image/gif', 'image/svg+xml', 'image/webp'];
+            $maxFileSize = 2048; // 2 MB
+    
+            if (!in_array($mimeType, $allowedMimeTypes) || strlen($binaryData) > ($maxFileSize * 1024)) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Invalid image file.',
+                ], 400);
+            }
+    
+
+            $fileExtension = explode('/', $mimeType)[1]; // Get the file extension from MIME type
+
+            $fileName = uniqid() . '.' . $fileExtension;
+    
+            Storage::disk('public')->put('badges/' . $fileName, $binaryData);
+            $publicUrl = Storage::disk('public')->url('lab-icons/' . $fileName);
+            $lab->icon_url = $publicUrl;
             if ($lab->save()) {
                 return response()->json([
                     'message' => 'Lab added',
@@ -97,17 +121,7 @@ class AdminController extends Controller
     
             $base64Image = $request->input('icon');
             $binaryData = base64_decode($base64Image);
-            $original_file_name=$request->file_name;
-            // $tempFilePath = tempnam(sys_get_temp_dir(), 'temp_base64');
-            // file_put_contents($tempFilePath, $binaryData);
-            // $uploadedFile = new UploadedFile(
-            //     $tempFilePath,
-            //     $original_file_name, 
-            //     mime_content_type($tempFilePath), // Get the MIME type
-            //     null,
-            //     true // Delete the file after validation
-            // );
-            // Use finfo to determine the MIME type based on file content
+
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $mimeType = finfo_buffer($finfo, $binaryData);
             finfo_close($finfo);

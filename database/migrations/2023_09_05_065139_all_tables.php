@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('objective');
             $table->string('launch_api')->unique();
             $table->integer('score');
+            $table->string('icon_url');
             $table->foreign('category_id')->references('id')->on('lab_categories');
             $table->foreign('difficulty_id')->references('id')->on('lab_difficulties');
 
