@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Badge;
 use App\Models\Lab;
+use App\Models\LabCategory;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -206,6 +207,33 @@ class AdminController extends Controller
         }
     }
 
- 
+    public function deleteLabCategory($id)
+    {
+        try {
+            $category = LabCategory::find($id);
+
+            if (!$category) {
+                return response()->json([
+                    'message' => 'Lab category not found'
+                ], 404);
+            }
+
+            if ($category->delete()) {
+                return response()->json([
+                    'message' => 'Lab category deleted'
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'Failed to delete lab category'
+                ], 500);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+
 
 }
