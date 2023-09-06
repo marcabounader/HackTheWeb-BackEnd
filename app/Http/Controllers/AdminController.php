@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Badge;
+use App\Models\BadgeCategory;
 use App\Models\Lab;
 use App\Models\LabCategory;
 use App\Models\LabDifficulty;
@@ -351,6 +352,40 @@ class AdminController extends Controller
                     'message' => 'Badge categories found',
                     'categories' => $categories
                 ], 200);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function addBadgeCategory(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|unique:badge_categories',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => $validator->errors()->first(),
+                ], 400);
+            }
+
+            $category = new BadgeCategory;
+            $category->name = $request->name;
+
+            if ($category->save()) {
+                return response()->json([
+                    'message' => 'Badge category added',
+                    'category' => $category
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'Failed to add badge category'
+                ], 500);
             }
         } catch (Exception $e) {
             return response()->json([
