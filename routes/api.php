@@ -52,6 +52,9 @@ Route::group(["middleware" => "auth:api"], function () {
         Route::controller(AdminController::class)->group(function () {
             Route::post('/add-lab','addLab');
             Route::delete('/delete-lab/{id}','deleteLab');
+            Route::get('/get-badges','getBadges');
+            Route::post('/add-badge','addBadge');
+            Route::delete('/delete-badge/{id}','deleteBadge');
 
         });
     });

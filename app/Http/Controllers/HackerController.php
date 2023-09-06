@@ -332,7 +332,7 @@ class HackerController extends Controller
                     ], 200);
                 }
 
-                $completed_lab = CompletedLab::create([
+                CompletedLab::create([
                     'user_id' => Auth::id(),
                     'lab_id' => $id
                 ]);
