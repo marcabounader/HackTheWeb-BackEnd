@@ -311,5 +311,32 @@ class AdminController extends Controller
         }
     }
 
+    public function deleteLabDifficulty($id)
+    {
+        try {
+            $difficulty = LabDifficulty::find($id);
+
+            if (!$difficulty) {
+                return response()->json([
+                    'message' => 'Lab difficulty not found'
+                ], 404);
+            }
+
+            if ($difficulty->delete()) {
+                return response()->json([
+                    'message' => 'Lab difficulty deleted'
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'Failed to delete lab difficulty'
+                ], 500);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
 
 }
