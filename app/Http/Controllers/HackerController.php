@@ -214,28 +214,68 @@ class HackerController extends Controller
         try {
             $user_id = Auth::id();
             $active_labs = ActiveLab::where("user_id", $user_id)
-            ->with('activeLabInfo') // Select specific columns from activeLabInfo
             ->get(['id','lab_id', 'project_name', 'launch_time' ,'port']);
             
+            $active_labs->load('activeLabInfo');
+
             if ($active_labs->isEmpty()) {
                 return response()->json([
                     'message' => 'No active labs'
                 ], 404);
             } else {
-                $active_labs = $active_labs->map(function ($item) {
-                    $item->id=$item->lab_id;
-                    $item->category_id = $item->activeLabInfo->category_id;
-                    $item->difficulty_id = $item->activeLabInfo->difficulty_id;
-                    $item->name = $item->activeLabInfo->name;
-                    $item->objective = $item->activeLabInfo->objective;
-                    $item->score = $item->activeLabInfo->score;
+                $active_labs = $active_labs->map(function ($lab) {
+                    $lab->category_id = $lab->activeLabInfo->category_id;
+                    $lab->difficulty_id = $lab->activeLabInfo->difficulty_id;
+                    $lab->name = $lab->activeLabInfo->name;
+                    $lab->objective = $lab->activeLabInfo->objective;
+                    $lab->score = $lab->activeLabInfo->score;
 
-                    unset($item->activeLabInfo); // Remove the activeLabInfo key
-                    return $item;
+                    unset($lab->activeLabInfo); // Remove the activeLabInfo key
+                    return $lab;
                 });
                 return response()->json([
                     'message' => 'Active labs found',
                     "active_labs" => $active_labs
+                ], 200);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+    
+    public function getCompletedLabs()
+    {
+        try {
+            $user_id = Auth::id();
+            $completed_labs = CompletedLab::where("user_id", $user_id)
+                ->get(['id', 'lab_id', 'complete_time']);
+    
+            // Explicitly load the 'completedLabInfo' relationship
+            $completed_labs->load('completedLabInfo');
+    
+            if ($completed_labs->isEmpty()) {
+                return response()->json([
+                    'message' => 'No completed labs'
+                ], 404);
+            } else {
+                $completed_labs = $completed_labs->map(function ($lab) {
+                    // Now you can safely access the 'completedLabInfo' relationship
+                    if ($lab->completedLabInfo) {
+                        $lab->category_id = $lab->completedLabInfo->category_id;
+                        $lab->difficulty_id = $lab->completedLabInfo->difficulty_id;
+                        $lab->name = $lab->completedLabInfo->name;
+                        $lab->objective = $lab->completedLabInfo->objective;
+                        $lab->score = $lab->completedLabInfo->score;
+                    }
+    
+                    unset($lab->completedLabInfo); // Remove the completedLabInfo key
+                    return $lab;
+                });
+                return response()->json([
+                    'message' => 'Completed labs found',
+                    "completed_labs" => $completed_labs
                 ], 200);
             }
         } catch (Exception $e) {

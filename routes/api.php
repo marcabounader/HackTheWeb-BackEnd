@@ -40,6 +40,8 @@ Route::group(["middleware" => "auth:api"], function () {
             Route::post('/run-sqli-lab', 'runSqliForUser');
             Route::delete('/stop-user-lab/{project_name}', 'stopUserLab');
             Route::get('/get-active-labs', 'getActiveLabs');
+            Route::get('/get-completed-labs', 'getCompletedLabs');
+
             Route::post('/submit-flag', 'submitFlag');
 
         });

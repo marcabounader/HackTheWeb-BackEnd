@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CompletedLab extends Model
 {
@@ -15,5 +16,9 @@ class CompletedLab extends Model
     ];
 
     public $timestamps = false;
+
+    public function completedLabInfo() : BelongsTo {
+        return $this->belongsTo(Lab::class,"lab_id","id");
+    }
 
 }
