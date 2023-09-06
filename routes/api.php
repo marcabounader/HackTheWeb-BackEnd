@@ -64,6 +64,10 @@ Route::group(["middleware" => "auth:api"], function () {
             Route::get('/get-badge-categories','getBadgeCategories');
             Route::post('/add-badge-category','addBadgeCategory');
             Route::delete('/delete-badge-category/{id}','deleteBadgeCategory');
+            Route::put('/modify-lab-difficulty','modifyLabDifficulty');
+            Route::put('/modify-lab-category','modifyLabCategory');
+            Route::put('/modify-badge-category','modifyBadgeCategory');
+
         });
     });
 });
