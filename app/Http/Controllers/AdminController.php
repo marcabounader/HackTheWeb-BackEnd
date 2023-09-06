@@ -420,4 +420,40 @@ class AdminController extends Controller
             ], 500);
         }
     }
+    public function modifyLabDifficulty(Request $request)
+{
+    try {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|exists:lab_difficulties,id',
+            'difficulty' => 'required|string|unique:lab_difficulties,difficulty,' . $request->id,
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 400);
+        }
+
+        $difficulty = LabDifficulty::find($request->id);
+        $difficulty->difficulty = $request->difficulty;
+
+        if ($difficulty->save()) {
+            return response()->json([
+                'message' => 'Lab difficulty modified',
+                'difficulty' => $difficulty
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Failed to modify lab difficulty'
+            ], 500);
+        }
+    } catch (Exception $e) {
+        return response()->json([
+            'message' => $e->getMessage()
+        ], 500);
+    }
+}
+
+    
 }
