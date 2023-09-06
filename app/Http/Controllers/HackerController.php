@@ -306,18 +306,7 @@ class HackerController extends Controller
                     'message' => 'Flag incorrect'
                 ], 404);
             } else {
-
-
-                $completed_lab = CompletedLab::create([
-                    'user_id' => Auth::id(),
-                    'lab_id' => $id
-                ]);
-                $project_name=$active_lab->project_name;
-                $command = "docker-compose -f $dockerComposeFile -p $project_name down 2>&1";
-                exec($command, $output, $exitCode);
-
-                $lab = Lab::find($id); // Use find instead of where to retrieve a single lab by its primary key
-    
+                $lab = Lab::find($id);
                 // Check if the lab was found
                 if (!$lab) {
                     return response()->json([
@@ -325,6 +314,29 @@ class HackerController extends Controller
                     ], 404);
                 }
     
+                $project_name=$active_lab->project_name;
+                $command = "docker-compose -f $dockerComposeFile -p $project_name down 2>&1";
+                exec($command, $output, $exitCode);
+
+                if ($exitCode !== 0) {
+                    return response()->json([
+                        'message' => "Error stopping instance for user ID {$user_id}",
+                        'output' => $output,
+                    ]);
+                }
+
+                if (CompletedLab::where([["user_id",$user_id],['lab_id',$id]])->first()){
+                    return response()->json([
+                        'message' => 'Flag is correct, lab already completed before',
+                        'completed_lab' => $lab
+                    ], 200);
+                }
+
+                $completed_lab = CompletedLab::create([
+                    'user_id' => Auth::id(),
+                    'lab_id' => $id
+                ]);
+
                 $new_score = $user->score + $lab->score; // Calculate the new score
     
                 // Update the user's score
