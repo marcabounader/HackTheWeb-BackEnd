@@ -33,6 +33,8 @@ Route::group(["middleware" => "auth:api"], function () {
     Route::group(["prefix" => "common"], function () {
         Route::controller(CommonController::class)->group(function () {
             Route::get('/get-labs','getLabs');
+            Route::get('/get-badges','getBadges');
+
         });
     });
     Route::group(["prefix" => "hacker", "middleware" => "valid.normal"], function () {
@@ -43,6 +45,7 @@ Route::group(["middleware" => "auth:api"], function () {
             Route::get('/get-completed-labs', 'getCompletedLabs');
 
             Route::post('/submit-flag', 'submitFlag');
+            Route::get('/get-my-badges','getMyBadges');
 
         });
         Route::get('/chat/{prompt}', [ChatbotController::class, "chat"]);
@@ -52,7 +55,6 @@ Route::group(["middleware" => "auth:api"], function () {
         Route::controller(AdminController::class)->group(function () {
             Route::post('/add-lab','addLab');
             Route::delete('/delete-lab/{id}','deleteLab');
-            Route::get('/get-badges','getBadges');
             Route::post('/add-badge','addBadge');
             Route::delete('/delete-badge/{id}','deleteBadge');
             Route::get('/get-lab-categories','getLabCategories');

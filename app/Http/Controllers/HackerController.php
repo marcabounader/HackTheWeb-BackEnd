@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\ActiveLab;
+use App\Models\Badge;
 use App\Models\CompletedLab;
 use App\Models\Lab;
 use App\Models\User;
+use App\Models\UserBadge;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -306,6 +308,7 @@ class HackerController extends Controller
                     'message' => 'Flag incorrect'
                 ], 404);
             } else {
+
                 $lab = Lab::find($id);
                 // Check if the lab was found
                 if (!$lab) {
@@ -313,18 +316,23 @@ class HackerController extends Controller
                         'message' => 'Lab not found'
                     ], 404);
                 }
-    
+                
                 $project_name=$active_lab->project_name;
                 $command = "docker-compose -f $dockerComposeFile -p $project_name down 2>&1";
                 exec($command, $output, $exitCode);
 
                 if ($exitCode !== 0) {
                     return response()->json([
-                        'message' => "Error stopping instance for user ID {$user_id}",
+                        'message' => "Error stopping lab instance for user ID {$user_id}",
                         'output' => $output,
                     ]);
                 }
-
+                if(!$active_lab->delete()){
+                    return response()->json([
+                        'message' => "Error deleting active lab",
+                        'output' => $output,
+                    ]);
+                }
                 if (CompletedLab::where([["user_id",$user_id],['lab_id',$id]])->first()){
                     return response()->json([
                         'message' => 'Flag is correct, lab already completed before',
@@ -341,9 +349,14 @@ class HackerController extends Controller
     
                 // Update the user's score
                 $user->update(['score' => $new_score]);
-    
+                $badge= Badge::where('name','SQLi beginner')->first();
+                $user_badge=UserBadge::create([
+                    'user_id' => $user_id,
+                    'badge_id' => $badge->id
+                ]);
                 return response()->json([
                     'message' => 'Flag is correct',
+                    'user_badge'=>$badge,
                     'completed_lab' => $lab
                 ], 200);
             }
@@ -354,5 +367,43 @@ class HackerController extends Controller
         }
     }
     
+    public function getMyBadges()
+{
+    try {
+        $user_id = Auth::id();
+
+        $badges = UserBadge::where('user_id', $user_id)->with('badgeInfo')->get(['id', 'badge_id']);
+
+        if ($badges->isEmpty()) {
+            return response()->json([
+                'message' => 'No badges exist'
+            ], 404);
+        } else {
+            $badges = $badges->map(function ($badge) {
+                if ($badge->badgeInfo) {
+                    $badge->category_id = $badge->badgeInfo->category_id;
+                    $badge->name = $badge->badgeInfo->name;
+                    $badge->icon_url = $badge->badgeInfo->icon_url;
+                    unset($badge->badgeInfo);
+                } else {
+                    $badge->category_id = null;
+                    $badge->name = null;
+                    $badge->icon_url = null;
+                }
+                return $badge;
+            });
+
+            return response()->json([
+                'message' => "Badges found.",
+                'badges' => $badges
+            ], 200);
+        }
+    } catch (Exception $e) {
+        return response()->json([
+            'message' => $e->getMessage()
+        ], 500);
+    }
+}
+
     
 }
