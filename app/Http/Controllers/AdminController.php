@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Badge;
 use App\Models\Lab;
 use App\Models\LabCategory;
+use App\Models\LabDifficulty;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -172,7 +173,28 @@ class AdminController extends Controller
             ], 500);
         }
     }
+    public function getLabCategories()
+    {
+        try {
+            // Retrieve all lab categories from the database
+            $labCategories = LabCategory::all();
 
+            if ($labCategories->isEmpty()) {
+                return response()->json([
+                    'message' => 'No lab categories found',
+                ], 404);
+            }
+
+            return response()->json([
+                'message' => 'Lab categories found',
+                'lab_categories' => $labCategories,
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
     public function addLabCategory(Request $request)
     {
         try {
