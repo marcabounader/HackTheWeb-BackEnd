@@ -256,6 +256,25 @@ class AdminController extends Controller
         }
     }
 
-
+    public function getLabDifficulties()
+    {
+        try {
+            $difficulties = LabDifficulty::get();
+            if ($difficulties->isEmpty()) {
+                return response()->json([
+                    'message' => 'No lab difficulties exist'
+                ], 404);
+            } else {
+                return response()->json([
+                    'message' => 'Lab difficulties found',
+                    'difficulties' => $difficulties
+                ], 200);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
 
 }
