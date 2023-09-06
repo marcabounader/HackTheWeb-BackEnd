@@ -338,5 +338,26 @@ class AdminController extends Controller
         }
     }
 
+    public function getBadgeCategories()
+    {
+        try {
+            $categories = BadgeCategory::get();
+            if ($categories->isEmpty()) {
+                return response()->json([
+                    'message' => 'No badge categories exist'
+                ], 404);
+            } else {
+                return response()->json([
+                    'message' => 'Badge categories found',
+                    'categories' => $categories
+                ], 200);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
 
 }
