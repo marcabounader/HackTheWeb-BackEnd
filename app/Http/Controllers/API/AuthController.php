@@ -31,11 +31,9 @@ class AuthController extends Controller
         }
 
         $user = Auth::user(); 
-        $userRank = $user->rank();
 
         return response()->json([
             'user' => $user,
-            'rank' => $userRank,
             'token' => $token
         ],200);
     }

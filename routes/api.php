@@ -46,6 +46,7 @@ Route::group(["middleware" => "auth:api"], function () {
 
             Route::post('/submit-flag', 'submitFlag');
             Route::get('/get-my-badges','getMyBadges');
+            Route::get('/statistics','statistics');
 
         });
         Route::get('/chat/{prompt}', [ChatbotController::class, "chat"]);

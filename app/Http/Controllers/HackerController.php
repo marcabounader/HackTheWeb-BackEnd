@@ -407,5 +407,23 @@ class HackerController extends Controller
     }
 }
 
-    
+    public function statistics(){
+        try{
+            $user=Auth::user();
+            $completed_lab_count = $user->completedLabs->count();
+            $rank = $user->rank();
+            $badge_count = $user->badges->count();
+            return response()->json([
+                "message" => 'Statistics created',
+                'score' => $user->score,
+                'rank' => $rank,
+                'completed_labs' => $completed_lab_count,
+                'badges' => $badge_count
+            ],200);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }

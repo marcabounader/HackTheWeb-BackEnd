@@ -80,5 +80,13 @@ class User extends Authenticatable implements JWTSubject
     
         return $rank;
     }
-    
+
+    public function completedLabs()
+    {
+        return $this->hasMany(CompletedLab::class);
+    }
+    public function badges()
+    {
+        return $this->hasMany(UserBadge::class);
+    }
 }
