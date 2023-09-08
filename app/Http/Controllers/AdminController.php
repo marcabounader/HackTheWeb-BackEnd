@@ -46,7 +46,7 @@ class AdminController extends Controller
 
             $fileName = uniqid() . '.' . $fileExtension;
     
-            Storage::disk('public')->put('badges/' . $fileName, $binaryData);
+            Storage::disk('public')->put('lab-icons/' . $fileName, $binaryData);
             $publicUrl = Storage::disk('public')->url('lab-icons/' . $fileName);
             $lab->icon_url = $publicUrl;
             if ($lab->save()) {
