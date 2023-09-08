@@ -263,18 +263,16 @@ class HackerController extends Controller
                 ], 404);
             } else {
                 $completed_labs = $completed_labs->map(function ($lab) {
-                    // Now you can safely access the 'completedLabInfo' relationship
                     if ($lab->completedLabInfo) {
                         $lab->category_id = $lab->completedLabInfo->category_id;
                         $lab->difficulty_id = $lab->completedLabInfo->difficulty_id;
                         $lab->name = $lab->completedLabInfo->name;
                         $lab->objective = $lab->completedLabInfo->objective;
                         $lab->score = $lab->completedLabInfo->score;
-                        $lab->icon_url = $lab->activeLabInfo->icon_url;
-
+                        $lab->icon_url = $lab->completedLabInfo->icon_url;
                     }
     
-                    unset($lab->completedLabInfo); // Remove the completedLabInfo key
+                    unset($lab->completedLabInfo);
                     return $lab;
                 });
                 return response()->json([
@@ -307,12 +305,11 @@ class HackerController extends Controller
             
             if (!$active_lab) {
                 return response()->json([
-                    'message' => 'Flag incorrect'
+                    'message' => 'Active lab not found'
                 ], 404);
             } else {
 
                 $lab = Lab::find($id);
-                // Check if the lab was found
                 if (!$lab) {
                     return response()->json([
                         'message' => 'Lab not found'
@@ -351,11 +348,13 @@ class HackerController extends Controller
     
                 // Update the user's score
                 $user->update(['score' => $new_score]);
-                $badge= Badge::where('name','SQLi beginner')->first();
+                $badge = Badge::where('name','SQLi beginner')->first();
+                
                 $user_badge=UserBadge::create([
                     'user_id' => $user_id,
                     'badge_id' => $badge->id
                 ]);
+                
                 return response()->json([
                     'message' => 'Flag is correct',
                     'user_badge'=>$badge,
