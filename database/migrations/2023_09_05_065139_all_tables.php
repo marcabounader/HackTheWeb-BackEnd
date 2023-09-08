@@ -30,8 +30,8 @@ return new class extends Migration
             $table->string('launch_api')->unique();
             $table->integer('score');
             $table->string('icon_url');
-            $table->foreign('category_id')->references('id')->on('lab_categories');
-            $table->foreign('difficulty_id')->references('id')->on('lab_difficulties');
+            $table->foreign('category_id')->references('id')->on('lab_categories')->onDelete('cascade');
+            $table->foreign('difficulty_id')->references('id')->on('lab_difficulties')->onDelete('cascade');
 
         });
         Schema::create('active_labs', function (Blueprint $table) {
@@ -43,8 +43,8 @@ return new class extends Migration
             $table->string('project_name');
             $table->integer('port');
             $table->timestamp('launch_time')->useCurrent();
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('lab_id')->references('id')->on('labs');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('lab_id')->references('id')->on('labs')->onDelete('cascade');
 
         });
 
@@ -54,8 +54,8 @@ return new class extends Migration
             $table->unsignedBigInteger('lab_id');
             $table->timestamp('complete_time')->useCurrent();
             $table->unique(['user_id', 'lab_id']);
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('lab_id')->references('id')->on('labs');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('lab_id')->references('id')->on('labs')->onDelete('cascade');
         });
 
         Schema::create('badge_categories', function (Blueprint $table) {
@@ -68,7 +68,7 @@ return new class extends Migration
             $table->unsignedBigInteger("category_id");
             $table->string('name');
             $table->string('icon_url');
-            $table->foreign('category_id')->references('id')->on('badge_categories');
+            $table->foreign('category_id')->references('id')->on('badge_categories')->onDelete('cascade');
 
         });
 
@@ -78,8 +78,8 @@ return new class extends Migration
             $table->unsignedBigInteger('badge_id');
             $table->unique(['user_id', 'badge_id']);
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('badge_id')->references('id')->on('badges');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('badge_id')->references('id')->on('badges')->onDelete('cascade');
 
         });
 
