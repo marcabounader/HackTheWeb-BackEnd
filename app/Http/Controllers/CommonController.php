@@ -10,7 +10,7 @@ class CommonController extends Controller
 {
     public function getLabs(){
         try{
-            $labs=Lab::get();
+            $labs=Lab::with('difficultyInfo')->get();
 
             return response()->json([
                 'message' => 'Fetched labs',
