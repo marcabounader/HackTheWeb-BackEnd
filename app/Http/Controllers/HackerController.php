@@ -230,7 +230,7 @@ class HackerController extends Controller
                     $lab->difficulty_id = $lab->activeLabInfo->difficulty_id;
                     $lab->name = $lab->activeLabInfo->name;
                     $lab->objective = $lab->activeLabInfo->objective;
-                    $lab->score = $lab->activeLabInfo->score;
+                    $lab->rewards = $lab->activeLabInfo->rewards;
                     $lab->icon_url = $lab->activeLabInfo->icon_url;
                     unset($lab->activeLabInfo); // Remove the activeLabInfo key
                     return $lab;
@@ -268,7 +268,7 @@ class HackerController extends Controller
                         $lab->difficulty_id = $lab->completedLabInfo->difficulty_id;
                         $lab->name = $lab->completedLabInfo->name;
                         $lab->objective = $lab->completedLabInfo->objective;
-                        $lab->score = $lab->completedLabInfo->score;
+                        $lab->rewards = $lab->completedLabInfo->rewards;
                         $lab->icon_url = $lab->completedLabInfo->icon_url;
                     }
     
@@ -344,17 +344,16 @@ class HackerController extends Controller
                     'lab_id' => $id
                 ]);
 
-                $new_score = $user->score + $lab->score; // Calculate the new score
+                $new_reward = $user->rewards + $lab->reward; 
     
-                // Update the user's score
-                $user->update(['score' => $new_score]);
+                $user->update(['rewards' => $new_reward]);
                 $badge = Badge::where('name','SQLi beginner')->first();
                 
                 $user_badge=UserBadge::create([
                     'user_id' => $user_id,
                     'badge_id' => $badge->id
                 ]);
-                
+
                 return response()->json([
                     'message' => 'Flag is correct',
                     'user_badge'=>$badge,
@@ -414,7 +413,7 @@ class HackerController extends Controller
             $badge_count = $user->badges->count();
             return response()->json([
                 "message" => 'Statistics created',
-                'score' => $user->score,
+                'rewards' => $user->rewards,
                 'rank' => $rank,
                 'completed_labs' => $completed_lab_count,
                 'badges' => $badge_count

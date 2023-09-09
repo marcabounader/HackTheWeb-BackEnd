@@ -24,7 +24,7 @@ class AdminController extends Controller
             $lab->name=$request->name;
             $lab->objective=$request->objective;
             $lab->launch_api=$request->launch_api;
-            $lab->score=$request->score;
+            $lab->reward=$request->reward;
             $base64Image = $request->input('icon');
             $binaryData = base64_decode($base64Image);
 
@@ -93,25 +93,6 @@ class AdminController extends Controller
         } 
     }
 
-    public function getBadges(){
-        try{
-            $badges=Badge::get();
-            if ($badges->isEmpty()) {
-                return response()->json([
-                    'message' => 'No badges exist'
-                ], 404);
-            } else{
-                return response()->json([
-                    'message' => "Badges found.",
-                    'badges' => $badges
-                ],500);
-            }           
-        } catch(Exception $e){
-            return response()->json([
-                'message' => $e->getMessage()
-            ],500);
-        } 
-    }
     public function addBadge(Request $request)
     {
         try {
