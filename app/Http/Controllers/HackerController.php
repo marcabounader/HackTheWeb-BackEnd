@@ -220,20 +220,24 @@ class HackerController extends Controller
             $active_labs = ActiveLab::where("user_id", $user_id)
             ->get(['id','lab_id', 'project_name', 'launch_time' ,'port']);
             
-            $active_labs->load('activeLabInfo');
-
+            $active_labs->load(['activeLabInfo.difficultyInfo']);
             if ($active_labs->isEmpty()) {
                 return response()->json([
                     'message' => 'No active labs'
                 ], 404);
             } else {
                 $active_labs = $active_labs->map(function ($lab) {
+                    $difficultyInfo = $lab->activeLabInfo->difficultyInfo;
+
                     $lab->category_id = $lab->activeLabInfo->category_id;
                     $lab->difficulty_id = $lab->activeLabInfo->difficulty_id;
                     $lab->name = $lab->activeLabInfo->name;
                     $lab->objective = $lab->activeLabInfo->objective;
                     $lab->reward = $lab->activeLabInfo->reward;
                     $lab->icon_url = $lab->activeLabInfo->icon_url;
+
+                    $lab->difficulty_info = $difficultyInfo;
+
                     unset($lab->activeLabInfo); // Remove the activeLabInfo key
                     return $lab;
                 });
@@ -257,7 +261,7 @@ class HackerController extends Controller
                 ->get(['id', 'lab_id', 'complete_time']);
     
             // Explicitly load the 'completedLabInfo' relationship
-            $completed_labs->load('completedLabInfo');
+            $completed_labs->load('completedLabInfo.difficultyInfo');
     
             if ($completed_labs->isEmpty()) {
                 return response()->json([
@@ -266,12 +270,17 @@ class HackerController extends Controller
             } else {
                 $completed_labs = $completed_labs->map(function ($lab) {
                     if ($lab->completedLabInfo) {
+                        $difficultyInfo = $lab->completedLabInfo->difficultyInfo;
+
                         $lab->category_id = $lab->completedLabInfo->category_id;
                         $lab->difficulty_id = $lab->completedLabInfo->difficulty_id;
                         $lab->name = $lab->completedLabInfo->name;
                         $lab->objective = $lab->completedLabInfo->objective;
                         $lab->reward = $lab->completedLabInfo->reward;
                         $lab->icon_url = $lab->completedLabInfo->icon_url;
+                        $lab->difficulty_info = $difficultyInfo;
+                        unset($lab->completedLabInfo);
+                        return $lab;
                     }
     
                     unset($lab->completedLabInfo);
