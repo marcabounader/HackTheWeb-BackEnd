@@ -11,6 +11,8 @@ use App\Models\UserBadge;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class HackerController extends Controller
@@ -424,4 +426,81 @@ class HackerController extends Controller
             ], 500);
         }
     }
+    public function modifyProfile(Request $request)
+    {
+    try {
+        $user = Auth::user();
+        $changes = [];
+
+        // Check if 'name' is in the request and update the name
+        if ($request->has('name')) {
+            $user->name = $request->input('name');
+            $changes[] = 'name';
+        }
+
+        // Check if 'old_password' and 'new_password' are in the request
+        if ($request->has('old_password') && $request->has('new_password')) {
+            // Verify old_password matches the one in the database
+            if (Hash::check($request->input('old_password'), $user->password)) {
+                // Update the password to new_password
+                $user->password = Hash::make($request->input('new_password'));
+                $changes[] = 'password';
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Old password is incorrect.',
+                ], 400);
+            }
+        }
+
+        // Check if 'profile_image' is in the request and update the profile_url
+        if ($request->has('profile_image')) {
+            $user=Auth::user();
+
+            $base64Image = $request->input('profile_image');
+            $binaryData = base64_decode($base64Image);
+
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mimeType = finfo_buffer($finfo, $binaryData);
+            finfo_close($finfo);
+            $allowedMimeTypes = ['image/jpeg','image/jpg', 'image/png', 'image/gif', 'image/svg+xml', 'image/webp'];
+            $maxFileSize = 2048; // 2 MB
+    
+            if (!in_array($mimeType, $allowedMimeTypes) || strlen($binaryData) > ($maxFileSize * 1024)) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Invalid image file.',
+                ], 400);
+            }
+    
+
+            $fileExtension = explode('/', $mimeType)[1]; // Get the file extension from MIME type
+
+            $fileName = uniqid() . '.' . $fileExtension;
+    
+            Storage::disk('public')->put('profiles/' . $fileName, $binaryData);
+            $publicUrl = Storage::disk('public')->url('profiles/' . $fileName);
+            $user->profile_url = $publicUrl;
+
+            $changes[] = 'profile_url';
+        }
+
+        if ($user->save()) {
+            return response()->json([
+                'message' => 'Profile updated successfully',
+                'changes' => $changes,
+                'user' => $user,
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Failed to update profile',
+            ], 500);
+        }
+    } catch (Exception $e) {
+        return response()->json([
+            'message' => $e->getMessage(),
+        ], 500);
+    }
+}
+
 }

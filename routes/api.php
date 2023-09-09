@@ -43,7 +43,7 @@ Route::group(["middleware" => "auth:api"], function () {
             Route::delete('/stop-user-lab/{project_name}', 'stopUserLab');
             Route::get('/get-active-labs', 'getActiveLabs');
             Route::get('/get-completed-labs', 'getCompletedLabs');
-
+            Route::put('/modify-profile','modifyProfile');
             Route::post('/submit-flag', 'submitFlag');
             Route::get('/get-my-badges','getMyBadges');
             Route::get('/statistics','statistics');
