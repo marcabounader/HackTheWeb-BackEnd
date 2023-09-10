@@ -38,7 +38,7 @@ class HackerController extends Controller
         $user_id=Auth::id();
         $lab_id=$request->lab_id;
         $project_name = "mutillidae_sqli_{$user_id}";
-        
+    
         $userDockerDir = storage_path("mutillidae-docker-master/user-instances/$user_id");
         if (!file_exists($userDockerDir)) {
             mkdir($userDockerDir, 0755, true);
@@ -156,11 +156,13 @@ class HackerController extends Controller
                 'port' => $portNumber
             ]);
 
+            $activeWithoutFlag = $active->only(['id', 'user_id', 'lab_id', 'project_name', 'port']);
+
             return response()->json([
                 'message' => "Instance started for user ID {$user_id}",
                 'port_number' => $portNumber,
-                'active_lab' => $active,
-                'output' => $output, // Capture the command output
+                'active_lab' => $activeWithoutFlag,
+                'output' => $output,
             ]);
         } else {
             // The command encountered an error
@@ -305,6 +307,7 @@ class HackerController extends Controller
             $user = Auth::user();
             $submitted_flag = $request->flag;
             $id = $request->id;
+            
             $userDockerDir = storage_path("mutillidae-docker-master/user-instances/$user_id");
             $dockerComposeFile = "$userDockerDir/docker-compose.yml";
             
