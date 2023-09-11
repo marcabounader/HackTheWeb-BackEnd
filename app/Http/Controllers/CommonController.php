@@ -39,6 +39,7 @@ class CommonController extends Controller
             $users = User::where('type_id', 3)
                 ->orderBy('rewards', 'desc')
                 ->take(10)
+                ->withCount(['completedLabs', 'badges'])
                 ->get();
     
             $users = $users->map(function ($user) {
@@ -56,6 +57,8 @@ class CommonController extends Controller
             ], 500);
         }
     }
+    
+    
     
     
     
