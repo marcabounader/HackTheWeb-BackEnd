@@ -6,6 +6,7 @@ use App\Models\ActiveLab;
 use App\Models\Badge;
 use App\Models\CompletedLab;
 use App\Models\Lab;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,6 +32,32 @@ class CommonController extends Controller
             ],500);
         } 
     }
+    
+    public function topTen()
+    {
+        try {
+            $users = User::where('type_id', 3)
+                ->orderBy('rewards', 'desc')
+                ->take(10)
+                ->get();
+    
+            $users = $users->map(function ($user) {
+                $user->rank = $user->rank();
+                return $user;
+            });
+    
+            return response()->json([
+                'message' => 'Top 10 users',
+                'users' => $users
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+    
+    
     
     public function getBadges(){
         try{

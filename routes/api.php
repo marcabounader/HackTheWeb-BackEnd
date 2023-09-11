@@ -34,7 +34,7 @@ Route::group(["middleware" => "auth:api"], function () {
         Route::controller(CommonController::class)->group(function () {
             Route::get('/get-labs','getLabs');
             Route::get('/get-badges','getBadges');
-
+            Route::get('/top-ten','topTen');
         });
     });
     Route::group(["prefix" => "hacker", "middleware" => "valid.normal"], function () {
