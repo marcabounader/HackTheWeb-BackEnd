@@ -313,7 +313,6 @@ class HackerController extends Controller
             
             $active_lab = ActiveLab::where([
                 ["lab_id", '=', $id],
-                ["flag", '=', $submitted_flag],
                 ["user_id", '=', $user_id]
             ])->first();
             
@@ -322,7 +321,12 @@ class HackerController extends Controller
                     'message' => 'Active lab not found'
                 ], 404);
             } else {
-
+                if($active_lab->flag !== $submitted_flag){
+                    return response()->json([
+                        'message' => 'Flag incorrect'
+                    ], 404);
+                }
+                
                 $lab = Lab::find($id);
                 if (!$lab) {
                     return response()->json([
