@@ -287,7 +287,7 @@ class HackerController extends Controller
                     'message' => 'Active lab not found'
                 ], 404);
             } else {
-                if(!$active_lab->flag !== $submitted_flag){
+                if($active_lab->flag !== $submitted_flag){
                     return response()->json([
                         'message' => 'Flag incorrect'
                     ], 404);
