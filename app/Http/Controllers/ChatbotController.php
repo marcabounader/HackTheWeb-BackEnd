@@ -18,7 +18,7 @@ class ChatbotController extends Controller
                 'Content-Type' => 'application/json',
             ])->post('https://api.openai.com/v1/engines/text-davinci-003/completions', [
                 "prompt" => $prompt,
-                "max_tokens" => 1000,
+                "max_tokens" => 500,
                 "temperature" => 0.5
             ]);
             $result = str_replace("\n", "", $response->json()['choices'][0]['text']);
