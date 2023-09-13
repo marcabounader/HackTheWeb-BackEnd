@@ -56,6 +56,7 @@ Route::group(["middleware" => "auth:api"], function () {
     });
     Route::group(["prefix" => "admin", "middleware" => "valid.admin"], function () {
         Route::controller(AdminController::class)->group(function () {
+            Route::get('/statistics','statistics');
             Route::post('/add-lab','addLab');
             Route::delete('/delete-lab/{id}','deleteLab');
             Route::post('/add-badge','addBadge');
