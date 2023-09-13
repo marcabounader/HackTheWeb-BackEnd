@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActiveLab;
 use App\Models\Badge;
 use App\Models\BadgeCategory;
 use App\Models\Lab;
 use App\Models\LabCategory;
 use App\Models\LabDifficulty;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -64,6 +66,29 @@ class AdminController extends Controller
                 'message' => $e->getMessage()
             ],500);
         } 
+    }
+
+    public function statistics(){
+        try{
+            $lab_count = Lab::count();
+            $badge_count = Badge::count();
+            $user_count = User::count();
+            $active_lab_count = ActiveLab::count();
+            $dockerCommand = 'docker ps -q | wc -l';
+            $activeProjectsCount = (int) trim(shell_exec($dockerCommand));
+            return response()->json([
+                "message" => 'Statistics created',
+                'lab_count' => $lab_count,
+                'badge_count' => $badge_count,
+                'user_count' => $user_count,
+                'active_lab_count' => $active_lab_count,
+                'active_docker_count' => $activeProjectsCount
+            ],200);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function deleteLab($id){
