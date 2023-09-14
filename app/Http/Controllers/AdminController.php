@@ -12,11 +12,114 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
+    public function getActiveLabs()
+    {
+        try {
+            $active_labs = ActiveLab::all();
+            $active_labs->load('userInfo');
+            if ($active_labs->isEmpty()) {
+                return response()->json([
+                    'message' => 'No active labs'
+                ], 404);
+            } else {
+                return response()->json([
+                    'message' => 'Active labs found',
+                    "active_labs" => $active_labs
+                ], 200);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+    public function modifyLab(Request $request, $lab_id)
+    {
+        try {
+            $lab = Lab::find($lab_id);
+    
+            if (!$lab) {
+                return response()->json([
+                    'message' => 'Lab not found',
+                ], 404);
+            }
+    
+            if ($request->has('category_id')) {
+                $lab->category_id = $request->category_id;
+            }
+    
+            if ($request->has('difficulty_id')) {
+                $lab->difficulty_id = $request->difficulty_id;
+            }
+    
+            if ($request->has('name')) {
+                $lab->name = $request->name;
+            }
+    
+            if ($request->has('objective')) {
+                $lab->objective = $request->objective;
+            }
+    
+            if ($request->has('launch_api')) {
+                $lab->launch_api = $request->launch_api;
+            }
+    
+            if ($request->has('reward')) {
+                $lab->reward = $request->reward;
+            }
+    
+            if ($request->has('icon')) {
+                $base64Image = $request->input('icon');
+                $binaryData = base64_decode($base64Image);
+    
+                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                $mimeType = finfo_buffer($finfo, $binaryData);
+                finfo_close($finfo);
+                $allowedMimeTypes = ['image/jpeg','image/jpg', 'image/png', 'image/gif', 'image/svg+xml', 'image/webp'];
+                $maxFileSize = 2048; // 2 MB
+        
+                if (!in_array($mimeType, $allowedMimeTypes) || strlen($binaryData) > ($maxFileSize * 1024)) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Invalid image file.',
+                    ], 400);
+                }
+        
+    
+                $fileExtension = explode('/', $mimeType)[1]; // Get the file extension from MIME type
+    
+                $fileName = uniqid() . '.' . $fileExtension;
+        
+                Storage::disk('public')->put('lab-icons/' . $fileName, $binaryData);
+                $publicUrl = Storage::disk('public')->url('lab-icons/' . $fileName);
+                $lab->icon_url = $publicUrl;
+            }
+    
+            if ($lab->save()) {
+                $lab->load('difficultyInfo');
+    
+                return response()->json([
+                    'message' => 'Lab modified',
+                    'lab' => $lab,
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'Failed to modify lab',
+                ], 500);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    
     public function addLab(Request $request){
 
         try{
