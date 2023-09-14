@@ -51,7 +51,10 @@ class AdminController extends Controller
             Storage::disk('public')->put('lab-icons/' . $fileName, $binaryData);
             $publicUrl = Storage::disk('public')->url('lab-icons/' . $fileName);
             $lab->icon_url = $publicUrl;
+
             if ($lab->save()) {
+                $lab->load('difficultyInfo');
+
                 return response()->json([
                     'message' => 'Lab added',
                     'lab' => $lab
@@ -74,15 +77,15 @@ class AdminController extends Controller
             $badge_count = Badge::count();
             $user_count = User::count();
             $active_lab_count = ActiveLab::count();
-            $dockerCommand = 'docker ps -q | wc -l';
-            $activeProjectsCount = (int) trim(shell_exec($dockerCommand));
+            $dockerCommand = 'docker ps -q | Measure-Object | Select-Object -ExpandProperty Count';
+            $activeContainersCount = (int) trim(shell_exec("powershell.exe -command \"$dockerCommand\""));
             return response()->json([
                 "message" => 'Statistics created',
                 'lab_count' => $lab_count,
                 'badge_count' => $badge_count,
                 'user_count' => $user_count,
                 'active_lab_count' => $active_lab_count,
-                'active_docker_count' => $activeProjectsCount
+                'active_docker_count' => $activeContainersCount
             ],200);
         } catch (Exception $e) {
             return response()->json([
