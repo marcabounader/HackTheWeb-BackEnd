@@ -23,5 +23,7 @@ class ActiveLab extends Model
     public function activeLabInfo() : BelongsTo {
         return $this->belongsTo(Lab::class,"lab_id","id");
     }
-
+    public function userInfo() : BelongsTo {
+        return $this->belongsTo(User::class,"user_id","id");
+    }
 }
