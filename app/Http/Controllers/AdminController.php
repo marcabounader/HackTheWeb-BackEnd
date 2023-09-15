@@ -100,8 +100,6 @@ class AdminController extends Controller
         }
     }
     
-
-    }
     public function getUsers()
     {
         try {
