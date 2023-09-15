@@ -66,10 +66,11 @@ return new class extends Migration
         Schema::create('badges', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("category_id");
+            $table->unsignedBigInteger("lab_id")->nullable();
             $table->string('name');
             $table->string('icon_url');
             $table->foreign('category_id')->references('id')->on('badge_categories')->onDelete('cascade');
-
+            $table->foreign('lab_id')->references('id')->on('labs')->onDelete('cascade');
         });
 
         Schema::create('user_badges', function (Blueprint $table) {
