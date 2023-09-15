@@ -59,7 +59,7 @@ class CommonController extends Controller
     
     public function getBadges(){
         try{
-            $badges=Badge::get();
+            $badges=Badge::all();
             if ($badges->isEmpty()) {
                 return response()->json([
                     'message' => 'No badges exist'
@@ -68,7 +68,7 @@ class CommonController extends Controller
                 return response()->json([
                     'message' => "Badges found.",
                     'badges' => $badges
-                ],500);
+                ],200);
             }           
         } catch(Exception $e){
             return response()->json([
