@@ -77,6 +77,31 @@ class AdminController extends Controller
             ], 500);
         }
     }
+    public function restrict($user_id)
+    {
+        try {
+            $user = User::find($user_id);
+    
+            if (!$user) {
+                return response()->json([
+                    'message' => 'User not found'
+                ], 404);
+            }
+    
+            $user->update(['is_restricted' => true]);
+    
+            return response()->json([
+                'message' => 'User restricted successfully'
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+    
+
+    }
     public function getUsers()
     {
         try {
