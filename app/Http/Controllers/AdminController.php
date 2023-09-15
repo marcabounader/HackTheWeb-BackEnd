@@ -77,6 +77,33 @@ class AdminController extends Controller
             ], 500);
         }
     }
+    public function getUsers()
+    {
+        try {
+            $users = User::where('type_id',3)
+            ->get();
+
+            $users = $users->map(function ($user) {
+                $user->rank = $user->rank();
+                return $user;
+            });
+
+            if ($users->isEmpty()) {
+                return response()->json([
+                    'message' => 'No users'
+                ], 404);
+            } else {
+                return response()->json([
+                    'message' => 'USers found',
+                    "users" => $users
+                ], 200);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
     public function modifyLab(Request $request, $lab_id)
     {
         try {
