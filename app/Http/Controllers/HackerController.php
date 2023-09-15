@@ -91,15 +91,10 @@ class HackerController extends Controller
                 - datanet
               environment:
               - FLAG= flag-{$randomFlag}
-        # Volumes to persist data used by the LDAP server
-        volumes:
-          ldap_data:
-          ldap_config:
           
         # Create network segments for the containers to use
         networks:
             datanet:
-            ldapnet:        
         ";
 
         file_put_contents($dockerComposeFile,$dockerComposeContent);
@@ -350,18 +345,20 @@ class HackerController extends Controller
                 ]);
 
                 $new_reward = $user->rewards + $lab->reward; 
-    
                 $user->update(['rewards' => $new_reward]);
-                $badge = Badge::where('name','SQLi beginner')->first();
-                
-                $user_badge=UserBadge::create([
-                    'user_id' => $user_id,
-                    'badge_id' => $badge->id
-                ]);
+
+                $badge = Badge::where('lab_id',$id)->first();
+                if($badge){
+                    $user_badge=UserBadge::create([
+                        'user_id' => $user_id,
+                        'badge_id' => $badge->id
+                    ]);
+                }
+
 
                 return response()->json([
                     'message' => 'Flag is correct',
-                    'user_badge'=>$badge,
+                    'user_badge'=> $badge,
                     'completed_lab' => $lab
                 ], 200);
             }
