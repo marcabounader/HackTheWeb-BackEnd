@@ -26,7 +26,6 @@ class AdminController extends Controller
         $userDockerDir = storage_path("mutillidae-docker-master/user-instances/$user_id");
         $dockerComposeFile = "$userDockerDir/docker-compose.yml";
     
-        echo $dockerComposeFile;
         // Stop and remove containers using docker-compose
         $command = "docker-compose -f $dockerComposeFile -p $project_name down 2>&1";
         exec($command, $output, $exitCode);
