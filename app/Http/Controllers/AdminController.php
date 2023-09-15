@@ -18,6 +18,45 @@ use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
+    public function stopUserLab($project_name)
+    {
+        $project_name = "{$project_name}";
+        $active_lab=ActiveLab::where('project_name',$project_name)->first();
+        // Path to the user's Docker Compose file
+        $user_id=$active_lab->user_id;
+        $userDockerDir = storage_path(`mutillidae-docker-master/user-instances/$user_id`);
+        $dockerComposeFile = "$userDockerDir/docker-compose.yml";
+    
+        // Stop and remove containers using docker-compose
+        $command = "docker-compose -f $dockerComposeFile -p $project_name down 2>&1";
+        exec($command, $output, $exitCode);
+    
+        if ($exitCode === 0) {
+
+    
+            if (!$activeLab) {
+                return response()->json([
+                    'message' => 'Lab instance not found'
+                ], 404);
+            }
+    
+            if ($activeLab->delete()) {
+                return response()->json([
+                    'message' => "Lab instance stopped for user ID {$user_id}",
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'Failed to delete lab instance'
+                ], 500);
+            }
+        } else {
+            // The command encountered an error
+            return response()->json([
+                'message' => "Error stopping instance for user ID {$user_id}",
+                'output' => $output, // Capture the command output
+            ]);
+        }
+    }
     public function getActiveLabs()
     {
         try {
