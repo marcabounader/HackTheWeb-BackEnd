@@ -58,6 +58,7 @@ Route::group(["middleware" => "auth:api"], function () {
             Route::get('/statistics','statistics');
             Route::post('/add-lab','addLab');
             Route::put('/modify-lab/{lab_id}','modifyLab');
+            Route::put('/modify-badge/{badge_id}','modifyBadge');
             Route::get('/get-active-labs', 'getActiveLabs');
             Route::delete('/delete-lab/{id}','deleteLab');
             Route::post('/add-badge','addBadge');
