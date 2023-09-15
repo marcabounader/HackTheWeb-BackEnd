@@ -120,6 +120,71 @@ class AdminController extends Controller
         }
     }
     
+    public function modifyBadge(Request $request, $badge_id)
+    {
+        try {
+            $badge = Lab::find($badge_id);
+    
+            if (!$badge) {
+                return response()->json([
+                    'message' => 'Badge not found',
+                ], 404);
+            }
+    
+            if ($request->has('category_id')) {
+                $badge->category_id = $request->category_id;
+            }
+
+    
+            if ($request->has('name')) {
+                $badge->name = $request->name;
+            }
+    
+
+            if ($request->has('icon')) {
+                $base64Image = $request->input('icon');
+                $binaryData = base64_decode($base64Image);
+    
+                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                $mimeType = finfo_buffer($finfo, $binaryData);
+                finfo_close($finfo);
+                $allowedMimeTypes = ['image/jpeg','image/jpg', 'image/png', 'image/gif', 'image/svg+xml', 'image/webp'];
+                $maxFileSize = 2048; // 2 MB
+        
+                if (!in_array($mimeType, $allowedMimeTypes) || strlen($binaryData) > ($maxFileSize * 1024)) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Invalid image file.',
+                    ], 400);
+                }
+        
+    
+                $fileExtension = explode('/', $mimeType)[1]; // Get the file extension from MIME type
+    
+                $fileName = uniqid() . '.' . $fileExtension;
+        
+                Storage::disk('public')->put('lab-icons/' . $fileName, $binaryData);
+                $publicUrl = Storage::disk('public')->url('lab-icons/' . $fileName);
+                $badge->icon_url = $publicUrl;
+            }
+    
+            if ($badge->save()) {
+    
+                return response()->json([
+                    'message' => 'Badge modified',
+                    'badge' => $badge,
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'Failed to modify Badge',
+                ], 500);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
     public function addLab(Request $request){
 
         try{
@@ -472,7 +537,7 @@ class AdminController extends Controller
     public function getBadgeCategories()
     {
         try {
-            $categories = BadgeCategory::get();
+            $categories = BadgeCategory::all();
             if ($categories->isEmpty()) {
                 return response()->json([
                     'message' => 'No badge categories exist'
