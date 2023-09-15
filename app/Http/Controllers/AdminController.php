@@ -87,12 +87,30 @@ class AdminController extends Controller
                     'message' => 'User not found'
                 ], 404);
             }
-    
-            $user->update(['is_restricted' => true]);
-    
-            return response()->json([
-                'message' => 'User restricted successfully'
-            ], 200);
+            if(!$user->is_restricted){
+                $update_success=$user->update(['is_restricted' => true]);
+                if($update_success){
+                    return response()->json([
+                        'message' => 'restricted'
+                    ], 200);
+                } else {
+                    return response()->json([
+                        'message' => 'Failed to restrict user'
+                    ], 500);
+                }
+            } else {
+                $update_success=$user->update(['is_restricted' => false]);
+                if($update_success){
+                    return response()->json([
+                        'message' => 'unrestricted'
+                    ], 200);
+                } else {
+                    return response()->json([
+                        'message' => 'Failed to unrestrict user'
+                    ], 500);
+                }
+            }
+
         } catch (Exception $e) {
             return response()->json([
                 'message' => $e->getMessage()
