@@ -34,13 +34,13 @@ class AdminController extends Controller
         if ($exitCode === 0) {
 
     
-            if (!$activeLab) {
+            if (!$active_lab) {
                 return response()->json([
                     'message' => 'Lab instance not found'
                 ], 404);
             }
     
-            if ($activeLab->delete()) {
+            if ($active_lab->delete()) {
                 return response()->json([
                     'message' => "Lab instance stopped for user ID {$user_id}",
                 ], 200);
