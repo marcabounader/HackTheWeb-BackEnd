@@ -33,7 +33,6 @@ Route::group(["middleware" => "auth:api"], function () {
     Route::group(["prefix" => "common"], function () {
         Route::controller(CommonController::class)->group(function () {
             Route::get('/get-all-labs','getAllLabs');
-
             Route::get('/get-badges','getBadges');
             Route::get('/top-ten','topTen');
         });
