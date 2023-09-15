@@ -123,7 +123,7 @@ class AdminController extends Controller
     public function modifyBadge(Request $request, $badge_id)
     {
         try {
-            $badge = Lab::find($badge_id);
+            $badge = Badge::find($badge_id);
     
             if (!$badge) {
                 return response()->json([
