@@ -94,7 +94,7 @@ class AdminController extends Controller
                 ], 404);
             } else {
                 return response()->json([
-                    'message' => 'USers found',
+                    'message' => 'Users found',
                     "users" => $users
                 ], 200);
             }
