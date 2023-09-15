@@ -255,7 +255,11 @@ class AdminController extends Controller
             Storage::disk('public')->put('badges/' . $fileName, $binaryData);
             $publicUrl = Storage::disk('public')->url('badges/' . $fileName);
             $badge->icon_url = $publicUrl;
-    
+            if($request->has('lab_id')){
+                if(!empty($request->lab_id)){
+                    $badge->lab_id=$request->lab_id;
+                }
+            }
             $badge->save();
     
             return response()->json([
