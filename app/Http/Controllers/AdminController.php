@@ -20,13 +20,13 @@ class AdminController extends Controller
 {
     public function stopUserLab($project_name)
     {
-        $project_name = "{$project_name}";
         $active_lab=ActiveLab::where('project_name',$project_name)->first();
         // Path to the user's Docker Compose file
         $user_id=$active_lab->user_id;
-        $userDockerDir = storage_path(`mutillidae-docker-master/user-instances/$user_id`);
+        $userDockerDir = storage_path("mutillidae-docker-master/user-instances/$user_id");
         $dockerComposeFile = "$userDockerDir/docker-compose.yml";
     
+        echo $dockerComposeFile;
         // Stop and remove containers using docker-compose
         $command = "docker-compose -f $dockerComposeFile -p $project_name down 2>&1";
         exec($command, $output, $exitCode);
