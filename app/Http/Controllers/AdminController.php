@@ -272,7 +272,12 @@ class AdminController extends Controller
                     'message' => 'Lab not found'
                 ], 404);
             }
+            $iconUrl = $lab->icon_url;
         
+            $filename = basename($iconUrl);
+    
+            Storage::disk('public')->delete('lab-icons/' . $filename);
+    
             if ($lab->delete()) {
                 return response()->json([
                     'message' => 'Lab deleted'
