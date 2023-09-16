@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\RestrictController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -31,7 +32,11 @@ class AuthController extends Controller
         }
 
         $user = Auth::user(); 
-
+        if($user->is_restricted==true){
+            return response()->json([
+                'message' => 'Account is restricted. Please contact admin.',
+            ], 401);
+        }        
         return response()->json([
             'user' => $user,
             'token' => $token
