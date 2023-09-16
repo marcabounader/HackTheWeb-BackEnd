@@ -19,6 +19,7 @@ class ActiveLab extends Model
         'project_name',
         'port'
     ];
+    protected $dates = ['launch_time'];
 
     public function activeLabInfo() : BelongsTo {
         return $this->belongsTo(Lab::class,"lab_id","id");
