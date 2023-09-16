@@ -55,21 +55,21 @@ class HackerController extends Controller
         services:
         
           database:
-            container_name: database-$user_id
+            container_name: database-sqli-$user_id
             image: webpwnized/mutillidae:database
             build: 
-                context: ./database
+                context: ../../../database
                 dockerfile: Dockerfile
             networks:
               - datanet   
         
           database_admin:
-            container_name: database_admin-$user_id
+            container_name: database_admin-sqli-$user_id
             depends_on:
               - database
             image: webpwnized/mutillidae:database_admin
             build:
-                context: ./database_admin
+                context: ../../../database_admin
                 dockerfile: Dockerfile
             ports:
               - 127.0.0.1::80
@@ -82,7 +82,7 @@ class HackerController extends Controller
                 - database
               image: webpwnized/mutillidae:www-sqli
               build:
-                  context: ../../../../storage/mutillidae-docker-master/www-sqli
+                  context: ../../../www-sqli
                   dockerfile: Dockerfile
               ports:
                 - 127.0.0.1::80
@@ -117,7 +117,7 @@ class HackerController extends Controller
                 'port' => $portNumber
             ]);
 
-            $activeWithoutFlag =ActiveLab::select(['id', 'user_id', 'lab_id', 'project_name', 'port','launch_time'])->first();
+            $activeWithoutFlag =ActiveLab::select(['id', 'user_id', 'lab_id', 'project_name', 'port','launch_time'])->find($active->id);
             return response()->json([
                 'message' => "Instance started for user ID {$user_id}",
                 'port_number' => $portNumber,
@@ -153,21 +153,21 @@ class HackerController extends Controller
         services:
         
           database:
-            container_name: database-$user_id
+            container_name: database-ci-$user_id
             image: webpwnized/mutillidae:database
             build: 
-                context: ./database
+                context: ../../../database
                 dockerfile: Dockerfile
             networks:
               - datanet   
         
           database_admin:
-            container_name: database_admin-$user_id
+            container_name: database_admin-ci-$user_id
             depends_on:
               - database
             image: webpwnized/mutillidae:database_admin
             build:
-                context: ./database_admin
+                context: ../../../database_admin
                 dockerfile: Dockerfile
             ports:
               - 127.0.0.1::80
@@ -180,7 +180,7 @@ class HackerController extends Controller
                 - database
               image: webpwnized/mutillidae:www-ci
               build:
-                  context: ../../../../storage/mutillidae-docker-master/www-ci
+                  context: ../../../www-ci
                   dockerfile: Dockerfile
               ports:
                 - 127.0.0.1::80
@@ -215,7 +215,7 @@ class HackerController extends Controller
                 'port' => $portNumber
             ]);
 
-            $activeWithoutFlag =ActiveLab::select(['id', 'user_id', 'lab_id', 'project_name', 'port','launch_time'])->first();
+            $activeWithoutFlag =ActiveLab::select(['id', 'user_id', 'lab_id', 'project_name', 'port','launch_time'])->find($active->id);
             return response()->json([
                 'message' => "Instance started for user ID {$user_id}",
                 'port_number' => $portNumber,
@@ -232,7 +232,7 @@ class HackerController extends Controller
     public function stopUserLab($project_name)
     {
         $user_id = Auth::id();
-        $project_name = "{$project_name}_{$user_id}";
+
         // Path to the user's Docker Compose file
         if($project_name=='mutillidae_sqli')
         {
@@ -241,6 +241,8 @@ class HackerController extends Controller
         } else if($project_name=='mutillidae_ci'){
             $userDockerDir = storage_path("mutillidae-docker-master/www-ci/user-instances/$user_id");
         }
+        $project_name = "{$project_name}_{$user_id}";
+
         $dockerComposeFile = "$userDockerDir/docker-compose.yml";
     
         // Stop and remove containers using docker-compose
