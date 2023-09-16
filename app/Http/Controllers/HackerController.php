@@ -117,19 +117,17 @@ class HackerController extends Controller
                 'port' => $portNumber
             ]);
 
-            $activeWithoutFlag = $active->only(['id', 'user_id', 'lab_id', 'project_name', 'port']);
-
+            $activeWithoutFlag =ActiveLab::select(['id', 'user_id', 'lab_id', 'project_name', 'port','launch_time'])->first();
             return response()->json([
                 'message' => "Instance started for user ID {$user_id}",
                 'port_number' => $portNumber,
                 'active_lab' => $activeWithoutFlag,
                 'output' => $output,
-            ]);
+            ],200);
         } else {
-            // The command encountered an error
             return response()->json([
                 'message' => "Error starting instance for user ID {$user_id}",
-                'output' => $output, // Capture the command output
+                'output' => $output,
             ],500);
         }
     }
