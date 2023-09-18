@@ -393,7 +393,15 @@ class HackerController extends Controller
             $submitted_flag = $request->flag;
             $id = $request->id;
             
-            $userDockerDir = storage_path("mutillidae-docker-master/user-instances/$user_id");
+            $project_name=$request->project_name;
+
+            if($project_name=="mutillidae_sqli_$user_id")
+            {
+                $userDockerDir = storage_path("mutillidae-docker-master/www-sqli/user-instances/$user_id");
+    
+            } else if($project_name=="mutillidae_ci_$user_id"){
+                $userDockerDir = storage_path("mutillidae-docker-master/www-ci/user-instances/$user_id");
+            }
             $dockerComposeFile = "$userDockerDir/docker-compose.yml";
             
             $active_lab = ActiveLab::where([
