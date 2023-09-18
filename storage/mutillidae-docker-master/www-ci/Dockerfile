@@ -10,7 +10,7 @@ ARG DATABASE_USERNAME="root"
 ARG DATABASE_PASSWORD="mutillidae"
 ARG DATABASE_NAME="mutillidae"
 ARG DATABASE_PORT="3306"
-ARG CACHEBUST=6
+ARG CACHEBUST=8
 
 # ######################### #
 # Install software packages #
