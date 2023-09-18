@@ -349,7 +349,7 @@ class AdminController extends Controller
         try{
             $lab_count = Lab::count();
             $badge_count = Badge::count();
-            $user_count = User::count();
+            $user_count = User::where('type_id',3)->count();
             $active_lab_count = ActiveLab::count();
             $dockerCommand = 'docker ps -q | Measure-Object | Select-Object -ExpandProperty Count';
             $activeContainersCount = (int) trim(shell_exec("powershell.exe -command \"$dockerCommand\""));
