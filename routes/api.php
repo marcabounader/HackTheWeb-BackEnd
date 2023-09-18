@@ -39,7 +39,7 @@ Route::group(["middleware" => "auth:api"], function () {
     });
     Route::group(["prefix" => "hacker", "middleware" => "valid.normal"], function () {
         Route::controller(HackerController::class)->group(function () {
-            Route::get('/get-labs','getLabs');
+            Route::get('/get-labs/{page?}/{labs_per_page?}', 'getLabs');
 
             Route::post('/run-sqli-instance', 'runSqliForUser');
             Route::post('/run-ci-instance','runCommandInjection');
