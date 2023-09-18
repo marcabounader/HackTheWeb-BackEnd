@@ -5,6 +5,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\CommonController;
 use App\Http\Controllers\HackerController;
+use App\Http\Controllers\hello;
 use App\Http\Controllers\UnauthorizedController;
 
 use Illuminate\Http\Request;
@@ -26,6 +27,9 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
+});
+Route::controller(hello::class)->group(function () {
+Route::post('hello', 'hello');
 });
 
 
