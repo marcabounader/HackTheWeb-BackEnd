@@ -14,13 +14,24 @@ use Illuminate\Support\Facades\Auth;
 class CommonController extends Controller
 {
     
-    public function getAllLabs(){
+    public function getAllLabs($page = 1, $labs_per_page = 10){
         try{
-            $labs=Lab::with('difficultyInfo')->get();
-            
+            $offset = ($page - 1) * $labs_per_page;
+
+            $labs=Lab::with('difficultyInfo')
+            ->skip($offset)
+            ->take($labs_per_page)
+            ->get();
+
+            $total_labs = Lab::count();
+
+            $total_pages = ceil($total_labs / $labs_per_page);
+
             return response()->json([
                 'message' => 'Fetched labs',
-                'labs' => $labs
+                'labs' => $labs,
+                'total_pages' => $total_pages,
+                'currentPage' => $page,
             ], 200);
         } catch(Exception $e){
             return response()->json([
