@@ -29,7 +29,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('refresh', 'refresh');
 });
 Route::controller(hello::class)->group(function () {
-Route::post('hello', 'hello');
+Route::get('hello', 'hello');
 });
 
 
