@@ -351,7 +351,8 @@ class AdminController extends Controller
             $badge_count = Badge::count();
             $user_count = User::count();
             $active_lab_count = ActiveLab::count();
-            $dockerCommand = 'docker ps -q | Measure-Object | Select-Object -ExpandProperty Count';
+            // $dockerCommand = 'docker ps -q | Measure-Object | Select-Object -ExpandProperty Count';
+            $dockerCommand='docker ps -q | wc -l';
             $activeContainersCount = (int) trim(shell_exec("powershell.exe -command \"$dockerCommand\""));
             return response()->json([
                 "message" => 'Statistics created',
