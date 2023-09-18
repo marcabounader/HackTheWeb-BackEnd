@@ -41,7 +41,7 @@
               networks:
                 - datanet
               environment:
-              - FLAG= flag-WRIL30p34ZXx1j8r2vLS
+              - FLAG= flag-hrdH59riQZsHufmKI3nY
           
         # Create network segments for the containers to use
         networks:
