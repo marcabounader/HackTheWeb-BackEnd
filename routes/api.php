@@ -28,9 +28,6 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
 });
-Route::controller(hello::class)->group(function () {
-Route::get('hello', 'hello');
-});
 
 
 Route::group(["middleware" => "auth:api"], function () {
