@@ -203,7 +203,7 @@ class HackerController extends Controller
         
         // Check the exit code to determine if the command was successful
         if ($exitCode === 0) {
-            $containerName="www-sqli-$user_id";
+            $containerName="www-ci-$user_id";
             $portNumber = $this->getPortNumberFromContainer($containerName);
 
             //Add active lab
