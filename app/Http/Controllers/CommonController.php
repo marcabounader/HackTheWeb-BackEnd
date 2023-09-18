@@ -74,7 +74,7 @@ class CommonController extends Controller
             if ($badges->isEmpty()) {
                 return response()->json([
                     'message' => 'No badges exist'
-                ], 404);
+                ], 204);
             } else{
                 return response()->json([
                     'message' => "Badges found.",

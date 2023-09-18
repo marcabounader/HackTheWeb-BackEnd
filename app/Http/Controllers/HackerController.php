@@ -323,7 +323,7 @@ class HackerController extends Controller
             if ($active_labs->isEmpty()) {
                 return response()->json([
                     'message' => 'No active labs'
-                ], 404);
+                ], 204);
             } else {
                 $active_labs = $active_labs->map(function ($lab) {
                     $difficultyInfo = $lab->activeLabInfo->difficultyInfo;
@@ -365,7 +365,7 @@ class HackerController extends Controller
             if ($completed_labs->isEmpty()) {
                 return response()->json([
                     'message' => 'No completed labs'
-                ], 404);
+                ], 204);
             } else {
                 $completed_labs = $completed_labs->map(function ($lab) {
                     if ($lab->completedLabInfo) {
@@ -502,7 +502,7 @@ class HackerController extends Controller
         if ($badges->isEmpty()) {
             return response()->json([
                 'message' => 'No badges exist'
-            ], 404);
+            ], 204);
         } else {
             $badges = $badges->map(function ($badge) {
                 if ($badge->badgeInfo) {

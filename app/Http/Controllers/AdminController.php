@@ -544,7 +544,7 @@ class AdminController extends Controller
             if (!$category) {
                 return response()->json([
                     'message' => 'Lab category not found'
-                ], 404);
+                ], 204);
             }
 
             if ($category->delete()) {
@@ -570,7 +570,7 @@ class AdminController extends Controller
             if ($difficulties->isEmpty()) {
                 return response()->json([
                     'message' => 'No lab difficulties exist'
-                ], 404);
+                ], 204);
             } else {
                 return response()->json([
                     'message' => 'Lab difficulties found',
@@ -626,7 +626,7 @@ class AdminController extends Controller
             if (!$difficulty) {
                 return response()->json([
                     'message' => 'Lab difficulty not found'
-                ], 404);
+                ], 204);
             }
 
             if ($difficulty->delete()) {
