@@ -28,6 +28,20 @@ class CommonController extends Controller
             ],500);
         } 
     }
+    public function getLabsInfo(){
+        try{
+            $labs = Lab::select('id','name')->get();
+
+            return response()->json([
+                'message' => 'Fetched labs',
+                'labs' => $labs,
+            ], 200);
+        } catch(Exception $e){
+            return response()->json([
+                'message' => $e->getMessage()
+            ],500);
+        } 
+    }
     public function topTen()
     {
         try {
@@ -59,7 +73,8 @@ class CommonController extends Controller
     
     public function getBadges(){
         try{
-            $badges=Badge::all();
+            $badges=Badge::paginate(5);
+            
             if ($badges->isEmpty()) {
                 return response()->json([
                     'message' => 'No badges exist'
