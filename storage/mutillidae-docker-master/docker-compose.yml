@@ -25,54 +25,10 @@ services:
       - 127.0.0.1::80
     networks:
       - datanet   
-
-  www:
-    container_name: www
-    depends_on:
-      - database
-      - directory
-    image: webpwnized/mutillidae:www
-    build:
-        context: ./www
-        dockerfile: Dockerfile
-    ports:
-      - 127.0.0.1::80
-      - 127.0.0.1::443
-    networks:
-      - datanet
-      - ldapnet
-
-  directory:
-    container_name: directory
-    image: webpwnized/mutillidae:ldap
-    build:
-        context: ./ldap
-        dockerfile: Dockerfile
-    volumes:
-      - ldap_data:/var/lib/ldap
-      - ldap_config:/etc/ldap/slapd.d
-    ports:
-      - 127.0.0.1::389
-    networks:
-      - ldapnet
-
-  directory_admin:
-    container_name: directory_admin
-    depends_on:
-      - directory
-    image: webpwnized/mutillidae:ldap_admin
-    build:
-        context: ./ldap_admin          
-        dockerfile: Dockerfile
-    ports:
-      - 127.0.0.1::80
-    networks:
-      - ldapnet
   www-sqli:
     container_name: www-sqli
     depends_on:
       - database
-      - directory
     image: webpwnized/mutillidae:www-sqli
     build:
       context: ./www-sqli
@@ -82,15 +38,39 @@ services:
       - 127.0.0.1::443
     networks:
       - datanet
-      - ldapnet
     environment:
       - FLAG=marc
-# Volumes to persist data used by the LDAP server
-volumes:
-  ldap_data:
-  ldap_config:
-  
+  www-ci:
+    container_name: www-ci
+    depends_on:
+      - database
+    image: webpwnized/mutillidae:www-ci
+    build:
+      context: ./www-ci
+      dockerfile: Dockerfile
+    ports:
+      - 127.0.0.1::80
+      - 127.0.0.1::443
+    networks:
+      - datanet
+    environment:
+      - FLAG=marc
+  www-jwt:
+    container_name: www-jwt
+    depends_on:
+      - database
+    image: webpwnized/mutillidae:www-jwt
+    build:
+      context: ./www-jwt
+      dockerfile: Dockerfile
+    ports:
+      - 127.0.0.1::80
+      - 127.0.0.1::443
+    networks:
+      - datanet
+    environment:
+      - FLAG=marc
+
 # Create network segments for the containers to use
 networks:
     datanet:
-    ldapnet:
