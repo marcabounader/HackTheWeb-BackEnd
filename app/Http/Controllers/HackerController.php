@@ -278,17 +278,10 @@ class HackerController extends Controller
             ]);
         }
     }
-    public function getLabs($page = 1, $labs_per_page = 10){
+    public function getLabs(){
         try{
-            $offset = ($page - 1) * $labs_per_page;
     
-            $labs = Lab::with('difficultyInfo')
-                ->skip($offset)
-                ->take($labs_per_page)
-                ->get();
-    
-            $total_labs = Lab::count();
-            $total_pages = ceil($total_labs / $labs_per_page);
+            $labs = Lab::with('difficultyInfo')->paginate(9);
     
             foreach ($labs as $lab) {
                 $lab->isActive = ActiveLab::where([['user_id','=',Auth::id()],['lab_id','=',$lab->id]])
@@ -298,12 +291,9 @@ class HackerController extends Controller
                 $lab->active_lab = ActiveLab::where([['user_id','=',Auth::id()],['lab_id','=',$lab->id]])
                 ->first();
             }
-    
             return response()->json([
                 'message' => 'Fetched labs',
                 'labs' => $labs,
-                'total_pages' => $total_pages,
-                'currentPage' => $page,
             ], 200);
         } catch(Exception $e){
             return response()->json([
@@ -311,7 +301,6 @@ class HackerController extends Controller
             ],500);
         } 
     }
-    
     public function getActiveLabs()
     {
         try {
