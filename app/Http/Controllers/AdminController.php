@@ -23,7 +23,15 @@ class AdminController extends Controller
         $active_lab=ActiveLab::where('project_name',$project_name)->first();
         // Path to the user's Docker Compose file
         $user_id=$active_lab->user_id;
-        $userDockerDir = storage_path("mutillidae-docker-master/user-instances/$user_id");
+        if($project_name=="mutillidae_sqli_$user_id")
+        {
+            $userDockerDir = storage_path("mutillidae-docker-master/www-sqli/user-instances/$user_id");
+
+        } else if($project_name=="mutillidae_ci_$user_id"){
+            $userDockerDir = storage_path("mutillidae-docker-master/www-ci/user-instances/$user_id");
+        } else if($project_name=="mutillidae_jwt_$user_id"){
+            $userDockerDir = storage_path("mutillidae-docker-master/www-jwt/user-instances/$user_id");
+        }
         $dockerComposeFile = "$userDockerDir/docker-compose.yml";
     
         // Stop and remove containers using docker-compose
@@ -59,12 +67,11 @@ class AdminController extends Controller
     public function getActiveLabs()
     {
         try {
-            $active_labs = ActiveLab::all();
-            $active_labs->load('userInfo');
+            $active_labs = ActiveLab::with('userInfo')->paginate(5);
             if ($active_labs->isEmpty()) {
                 return response()->json([
                     'message' => 'No active labs'
-                ], 404);
+                ], 204);
             } else {
                 return response()->json([
                     'message' => 'Active labs found',
@@ -481,7 +488,6 @@ class AdminController extends Controller
     public function getLabCategories()
     {
         try {
-            // Retrieve all lab categories from the database
             $labCategories = LabCategory::all();
 
             if ($labCategories->isEmpty()) {
