@@ -27,7 +27,7 @@ return new class extends Migration
             $table->unsignedBigInteger('difficulty_id');
             $table->string('name')->unique();
             $table->string('objective');
-            $table->string('launch_api')->unique();
+            $table->string('launch_api');
             $table->integer('reward');
             $table->string('icon_url');
             $table->foreign('category_id')->references('id')->on('lab_categories')->onDelete('cascade');
