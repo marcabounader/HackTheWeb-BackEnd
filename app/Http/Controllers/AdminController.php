@@ -387,7 +387,7 @@ class AdminController extends Controller
         
             $filename = basename($iconUrl);
     
-            Storage::disk('public')->delete('lab-icons/' . $filename);
+            // Storage::disk('public')->delete('lab-icons/' . $filename);
     
             if ($lab->delete()) {
                 return response()->json([
@@ -473,7 +473,7 @@ class AdminController extends Controller
     
             $filename = basename($iconUrl);
     
-            Storage::disk('public')->delete('badges/' . $filename);
+            // Storage::disk('public')->delete('badges/' . $filename);
     
             return response()->json([
                 'message' => 'Badge deleted successfully.',
