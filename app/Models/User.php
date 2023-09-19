@@ -68,15 +68,13 @@ class User extends Authenticatable implements JWTSubject
 
     public function rank()
     {
-        $userScore = $this->score;
-    
+        $userScore = $this->rewards;
         if ($userScore === null) {
             $rank = User::where([['type_id','=','3']])->count();
             return $rank;
         }
     
         $rank = User::where([['type_id','=','3'],['rewards', '>=', $userScore], ['id', '!=', $this->id]])->count();
-    
         $rank++;
     
         return $rank;
