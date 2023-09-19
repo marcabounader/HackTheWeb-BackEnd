@@ -23,6 +23,17 @@ class DatabaseSeeder extends Seeder
 
         LabCategory::create(['category' => 'Injection']);
         LabCategory::create(['category' => 'Server-Side Request Forgery']);
+        LabCategory::create(['category' => 'Broken Access Control']);
+        LabCategory::create(['category' => 'Cryptographic Failures']);
+        LabCategory::create(['category' => 'Insecure Design']);
+        LabCategory::create(['category' => 'Broken Access Control']);
+        LabCategory::create(['category' => 'Security Misconfiguration']);
+        LabCategory::create(['category' => 'Vulnerable and Outdate Components']);
+        LabCategory::create(['category' => 'Identification and Authentication Failures']);
+        LabCategory::create(['category' => 'Software and Data Integrity Failures']);
+        LabCategory::create(['category' => 'Security Logging and Monitoring Failures']);
+
+
 
         BadgeCategory::create(['category' => 'Gold']);
         BadgeCategory::create(['category' => 'Silver']);
