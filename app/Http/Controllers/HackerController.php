@@ -229,6 +229,105 @@ class HackerController extends Controller
             ],500);
         }
     }
+
+    public function runInsecureJWT(Request $request)
+    {
+        $user_id=Auth::id();
+        $lab_id=$request->lab_id;
+        $project_name = "mutillidae_jwt_{$user_id}";
+    
+        $userDockerDir = storage_path("mutillidae-docker-master/www-jwt/user-instances/$user_id");
+        if (!file_exists($userDockerDir)) {
+            mkdir($userDockerDir, 0755, true);
+        }
+
+        $dockerComposeFile = "$userDockerDir/docker-compose.yml";
+        $randomFlag = Str::random(20);
+
+        $dockerComposeContent = "
+        # Documentation: https://github.com/compose-spec/compose-spec/blob/master/spec.md
+        # Purpose: Build local containers for the Mutillidae environment
+        
+        version: '3.7'
+        services:
+        
+          database:
+            container_name: database-jwt-$user_id
+            image: webpwnized/mutillidae:database
+            build: 
+                context: ../../../database
+                dockerfile: Dockerfile
+            networks:
+              - datanet   
+        
+          database_admin:
+            container_name: database_admin-jwt-$user_id
+            depends_on:
+              - database
+            image: webpwnized/mutillidae:database_admin
+            build:
+                context: ../../../database_admin
+                dockerfile: Dockerfile
+            ports:
+              - 127.0.0.1::80
+            networks:
+              - datanet   
+              
+          www-jwt:
+              container_name: www-jwt-$user_id
+              depends_on:
+                - database
+              image: webpwnized/mutillidae:www-jwt
+              build:
+                  context: ../../../www-jwt
+                  dockerfile: Dockerfile
+              ports:
+                - 127.0.0.1::80
+                - 127.0.0.1::443
+              networks:
+                - datanet
+              environment:
+              - FLAG= flag-{$randomFlag}
+          
+        # Create network segments for the containers to use
+        networks:
+            datanet:
+        ";
+
+        file_put_contents($dockerComposeFile,$dockerComposeContent);
+        //build command
+        $command = "docker-compose -f $dockerComposeFile -p $project_name up -d 2>&1";
+        exec($command, $output, $exitCode);
+
+        
+        // Check the exit code to determine if the command was successful
+        if ($exitCode === 0) {
+            $containerName="www-jwt-$user_id";
+            $portNumber = $this->getPortNumberFromContainer($containerName);
+
+            //Add active lab
+            $active = ActiveLab::create([
+                'user_id' => Auth::id(),
+                'lab_id' => $lab_id,
+                'flag' => $randomFlag,
+                'project_name' => $project_name,
+                'port' => $portNumber
+            ]);
+
+            $activeWithoutFlag =ActiveLab::select(['id', 'user_id', 'lab_id', 'project_name', 'port','launch_time'])->find($active->id);
+            return response()->json([
+                'message' => "Instance started for user ID {$user_id}",
+                'port_number' => $portNumber,
+                'active_lab' => $activeWithoutFlag,
+                'output' => $output,
+            ],200);
+        } else {
+            return response()->json([
+                'message' => "Error starting instance for user ID {$user_id}",
+                'output' => $output,
+            ],500);
+        }
+    }
     public function stopUserLab($project_name)
     {
         $user_id = Auth::id();
@@ -240,6 +339,8 @@ class HackerController extends Controller
 
         } else if($project_name=='mutillidae_ci'){
             $userDockerDir = storage_path("mutillidae-docker-master/www-ci/user-instances/$user_id");
+        } else if($project_name=='mutillidae_jwt'){
+            $userDockerDir = storage_path("mutillidae-docker-master/www-jwt/user-instances/$user_id");
         }
         $project_name = "{$project_name}_{$user_id}";
 
@@ -402,6 +503,8 @@ class HackerController extends Controller
     
             } else if($project_name=="mutillidae_ci_$user_id"){
                 $userDockerDir = storage_path("mutillidae-docker-master/www-ci/user-instances/$user_id");
+            } else if($project_name=="mutillidae_jwt_$user_id"){
+                $userDockerDir = storage_path("mutillidae-docker-master/www-jwt/user-instances/$user_id");
             }
             $dockerComposeFile = "$userDockerDir/docker-compose.yml";
             
