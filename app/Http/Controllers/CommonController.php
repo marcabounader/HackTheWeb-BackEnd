@@ -73,7 +73,7 @@ class CommonController extends Controller
     
     public function getBadges(){
         try{
-            $badges=Badge::paginate(5);
+            $badges=Badge::paginate(4);
             
             if ($badges->isEmpty()) {
                 return response()->json([
