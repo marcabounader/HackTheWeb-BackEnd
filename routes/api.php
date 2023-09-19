@@ -32,15 +32,14 @@ Route::controller(AuthController::class)->group(function () {
 Route::group(["middleware" => "auth:api"], function () {
     Route::group(["prefix" => "common"], function () {
         Route::controller(CommonController::class)->group(function () {
-            Route::get('/get-all-labs/{page?}/{labs_per_page?}','getAllLabs');
+            Route::get('/get-all-labs','getAllLabs');
             Route::get('/get-badges','getBadges');
             Route::get('/top-ten','topTen');
         });
     });
     Route::group(["prefix" => "hacker", "middleware" => "valid.normal"], function () {
         Route::controller(HackerController::class)->group(function () {
-            Route::get('/get-labs/{page?}/{labs_per_page?}', 'getLabs');
-
+            Route::get('/get-labs', 'getLabs');
             Route::post('/run-sqli-instance', 'runSqliForUser');
             Route::post('/run-ci-instance','runCommandInjection');
             Route::delete('/stop-user-lab/{project_name}', 'stopUserLab');
