@@ -121,22 +121,20 @@ class AdminController extends Controller
     public function getUsers()
     {
         try {
-            $users = User::where('type_id',3)
-            ->get();
+            $usersPaginator = User::where('type_id', 3)->paginate(5);
 
-            $users = $users->map(function ($user) {
-                $user->rank = $user->rank();
-                return $user;
-            });
-
-            if ($users->isEmpty()) {
+            if ($usersPaginator->isEmpty()) {
                 return response()->json([
                     'message' => 'No users'
-                ], 404);
+                ], 204);
             } else {
+                $users = $usersPaginator->items();
+                foreach ($users as $user) {
+                    $user->rank = $user->rank();
+                }
                 return response()->json([
                     'message' => 'Users found',
-                    "users" => $users
+                    'users' => $usersPaginator
                 ], 200);
             }
         } catch (Exception $e) {
