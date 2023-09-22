@@ -589,14 +589,14 @@ class HackerController extends Controller
     try {
         $user_id = Auth::id();
 
-        $badges = UserBadge::where('user_id', $user_id)->with('badgeInfo')->get(['id', 'badge_id']);
-
-        if ($badges->isEmpty()) {
+        $paginated_badges = UserBadge::select(['id', 'badge_id'])->where('user_id', $user_id)->with('badgeInfo')->paginate(4);
+        if ($paginated_badges->isEmpty()) {
             return response()->json([
                 'message' => 'No badges exist'
             ], 204);
         } else {
-            $badges = $badges->map(function ($badge) {
+            $badges = $paginated_badges->items();
+            foreach ($badges as $badge) {
                 if ($badge->badgeInfo) {
                     $badge->category_id = $badge->badgeInfo->category_id;
                     $badge->name = $badge->badgeInfo->name;
@@ -606,13 +606,12 @@ class HackerController extends Controller
                     $badge->category_id = null;
                     $badge->name = null;
                     $badge->icon_url = null;
-                }
-                return $badge;
-            });
+                }            
+            }
 
             return response()->json([
                 'message' => "Badges found.",
-                'badges' => $badges
+                'badges' => $paginated_badges
             ], 200);
         }
     } catch (Exception $e) {
