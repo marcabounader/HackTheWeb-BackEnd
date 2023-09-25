@@ -610,21 +610,28 @@ class AdminController extends Controller
                     'message' => 'Search query is empty.'
                 ], 400);
             }
-            $query = User::where([['type_id','=',3],['name', 'like', '%' . $query . '%'],['email', 'like', '%' . $query . '%']])->paginate(5);
-
-            if ($query->isEmpty()) {
+            $queryResult = User::where([
+                ['type_id', '=', 3],
+                ['name', 'like', '%' . $query . '%']
+            ])
+            ->orWhere([
+                ['type_id', '=', 3],
+                ['email', 'like', '%' . $query . '%']
+            ])
+            ->paginate(5);
+            if ($queryResult->isEmpty()) {
                 return response()->json([
                     'message' => 'No users with this name.'
                 ], 204);
             }
-            $users = $query->items();
+            $users = $queryResult->items();
             foreach ($users as $user) {
                 $user->rank = $user->rank();
             }
     
             return response()->json([
-                'message' => "Labs found.",
-                'users' => $query
+                'message' => "Users found.",
+                'users' => $queryResult
             ], 200);
         } catch (Exception $e) {
             return response()->json([
