@@ -57,6 +57,11 @@
 | Active Labs screen  | Users Screen | Add Lab Screen |
 | ![Active Labs](./readme/AdminScreens/active-labs.png) | ![Users](./readme/AdminScreens/users.png) | ![Add Lab](./readme/AdminScreens/add-lab.png) |
 
+### Watch the Demo Video
+
+[Admin Dashboard](https://youtu.be/jkY2_iAJK6E?si=cV5558tAzSgZJCJ9)
+[Hacker Dashboard](https://youtu.be/jkY2_iAJK6E?si=biYwDniiNF_kVQ-E)
+
 <br><br>
 
 <!-- Tech stack -->
