@@ -34,7 +34,7 @@ Route::group(["middleware" => "auth:api"], function () {
         Route::controller(CommonController::class)->group(function () {
             Route::get('/get-all-labs','getAllLabs');
             Route::get('/get-labs-info', 'getLabsInfo');
-
+            Route::get('/search-labs','searchLabs');
             Route::get('/get-badges','getBadges');
             Route::get('/top-ten','topTen');
         });
@@ -59,6 +59,8 @@ Route::group(["middleware" => "auth:api"], function () {
     });
     Route::group(["prefix" => "admin", "middleware" => "valid.admin"], function () {
         Route::controller(AdminController::class)->group(function () {
+            Route::get('/search-users','searchUsers');
+            Route::get('/search-active-labs','searchActiveLabs');
             Route::get('/statistics','statistics');
             Route::get('/get-users','getUsers');
             Route::post('/add-lab','addLab');

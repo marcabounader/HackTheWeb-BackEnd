@@ -6,7 +6,7 @@
         services:
         
           database:
-            container_name: database-ci-2
+            container_name: database-sqli-61
             image: webpwnized/mutillidae:database
             build: 
                 context: ../../../database
@@ -15,7 +15,7 @@
               - datanet   
         
           database_admin:
-            container_name: database_admin-ci-2
+            container_name: database_admin-sqli-61
             depends_on:
               - database
             image: webpwnized/mutillidae:database_admin
@@ -27,13 +27,13 @@
             networks:
               - datanet   
               
-          www-ci:
-              container_name: www-ci-2
+          www-sqli:
+              container_name: www-sqli-61
               depends_on:
                 - database
-              image: webpwnized/mutillidae:www-ci
+              image: webpwnized/mutillidae:www-sqli
               build:
-                  context: ../../../www-ci
+                  context: ../../../www-sqli
                   dockerfile: Dockerfile
               ports:
                 - 127.0.0.1::80
@@ -41,7 +41,7 @@
               networks:
                 - datanet
               environment:
-              - FLAG= flag-6WTdqjdLtksztVZPO3Ad
+              - FLAG= flag-xoSDrP1KNq3kbmt2HUSx
           
         # Create network segments for the containers to use
         networks:
