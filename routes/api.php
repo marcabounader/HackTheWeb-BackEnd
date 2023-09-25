@@ -35,6 +35,8 @@ Route::group(["middleware" => "auth:api"], function () {
             Route::get('/get-all-labs','getAllLabs');
             Route::get('/get-labs-info', 'getLabsInfo');
             Route::get('/search-labs','searchLabs');
+            Route::get('/search-badges','searchBadges');
+
             Route::get('/get-badges','getBadges');
             Route::get('/top-ten','topTen');
         });
