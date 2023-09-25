@@ -66,6 +66,31 @@ class CommonController extends Controller
         }
     }
     
+    public function searchBadges(Request $request) {
+        try {
+            $query=$request->input('query');
+            if (empty($query)) {
+                return response()->json([
+                    'message' => 'Search query is empty.'
+                ], 400);
+            }
+            $query = Badge::where('name', 'like', '%' . $query . '%')->paginate(4);
+            if ($query->isEmpty()) {
+                return response()->json([
+                    'message' => 'No badges with this name.'
+                ], 204);
+            }
+
+            return response()->json([
+                'message' => "Labs found.",
+                'badges' => $query
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
     public function getLabsInfo(){
         try{
             $labs = Lab::select('id','name')->get();
