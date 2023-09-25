@@ -9,9 +9,10 @@ use Illuminate\Support\Facades\Http;
 
 class ChatbotController extends Controller
 {
-    public function chat($prompt)
+    public function chat(Request $request)
     {
         try{
+            $prompt=$request->prompt;
             $response = Http::withoutVerifying()
             ->withHeaders([
                 'Authorization' => 'Bearer ' . env('CHATGPT_API_KEY'),

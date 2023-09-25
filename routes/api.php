@@ -56,7 +56,7 @@ Route::group(["middleware" => "auth:api"], function () {
             Route::get('/get-my-badges','getMyBadges');
             Route::get('/statistics','statistics');
         });
-        Route::get('/chat/{prompt}', [ChatbotController::class, "chat"]);
+        Route::post('/chat', [ChatbotController::class, "chat"]);
 
     });
     Route::group(["prefix" => "admin", "middleware" => "valid.admin"], function () {
