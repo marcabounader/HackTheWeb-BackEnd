@@ -84,6 +84,40 @@ class AdminController extends Controller
             ], 500);
         }
     }
+    public function searchActiveLabs(Request $request)
+    {
+        try {
+            $query=$request->input('query');
+            if (empty($query)) {
+                return response()->json([
+                    'message' => 'Search query is empty.'
+                ], 400);
+            }
+            $active_labs = ActiveLab::with('userInfo')
+            ->where(function ($queryBuilder) use ($query) {
+                $queryBuilder
+                    ->whereHas('userInfo', function ($userQuery) use ($query) {
+                        $userQuery->where('name', 'like', '%' . $query . '%');
+                    })
+                    ->orWhere('project_name', 'like', '%' . $query . '%');
+            })
+            ->paginate(5);
+            if ($active_labs->isEmpty()) {
+                return response()->json([
+                    'message' => 'No active labs'
+                ], 204);
+            } else {
+                return response()->json([
+                    'message' => 'Active labs found',
+                    "active_labs" => $active_labs
+                ], 200);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
     public function restrict($user_id)
     {
         try {
@@ -567,6 +601,37 @@ class AdminController extends Controller
         }
     }
 
+    public function searchUsers(Request $request) {
+        try {
+            $user = Auth::user();
+            $query=$request->input('query');
+            if (empty($query)) {
+                return response()->json([
+                    'message' => 'Search query is empty.'
+                ], 400);
+            }
+            $query = User::where([['type_id','=',3],['name', 'like', '%' . $query . '%'],['email', 'like', '%' . $query . '%']])->paginate(5);
+
+            if ($query->isEmpty()) {
+                return response()->json([
+                    'message' => 'No users with this name.'
+                ], 204);
+            }
+            $users = $query->items();
+            foreach ($users as $user) {
+                $user->rank = $user->rank();
+            }
+    
+            return response()->json([
+                'message' => "Labs found.",
+                'users' => $query
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
     public function getLabDifficulties()
     {
         try {
