@@ -621,6 +621,54 @@ class HackerController extends Controller
     }
 }
 
+public function searchBadges(Request $request)
+{
+    try {
+        $user_id = Auth::id();
+        $query=$request->input('query');
+        if (empty($query)) {
+            return response()->json([
+                'message' => 'Search query is empty.'
+            ], 400);
+        }
+        $paginated_badges = UserBadge::select(['id', 'badge_id'])
+        ->where('user_id', $user_id)
+        ->whereHas('badgeInfo', function ($query) use ($query) {
+            $query->where('name', 'like', '%' . $query . '%');
+        })
+        ->with('badgeInfo')
+        ->paginate(4);
+
+        if ($paginated_badges->isEmpty()) {
+            return response()->json([
+                'message' => 'No badges exist'
+            ], 204);
+        } else {
+            $badges = $paginated_badges->items();
+            foreach ($badges as $badge) {
+                if ($badge->badgeInfo) {
+                    $badge->category_id = $badge->badgeInfo->category_id;
+                    $badge->name = $badge->badgeInfo->name;
+                    $badge->icon_url = $badge->badgeInfo->icon_url;
+                    unset($badge->badgeInfo);
+                } else {
+                    $badge->category_id = null;
+                    $badge->name = null;
+                    $badge->icon_url = null;
+                }            
+            }
+
+            return response()->json([
+                'message' => "Badges found.",
+                'badges' => $paginated_badges
+            ], 200);
+        }
+    } catch (Exception $e) {
+        return response()->json([
+            'message' => $e->getMessage()
+        ], 500);
+    }
+}
     public function statistics(){
         try{
             $user=Auth::user();
