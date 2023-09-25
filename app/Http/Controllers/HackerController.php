@@ -625,16 +625,16 @@ public function searchBadges(Request $request)
 {
     try {
         $user_id = Auth::id();
-        $query=$request->input('query');
-        if (empty($query)) {
+        $search_query=$request->input('query');
+        if (empty($search_query)) {
             return response()->json([
                 'message' => 'Search query is empty.'
             ], 400);
         }
         $paginated_badges = UserBadge::select(['id', 'badge_id'])
         ->where('user_id', $user_id)
-        ->whereHas('badgeInfo', function ($query) use ($query) {
-            $query->where('name', 'like', '%' . $query . '%');
+        ->whereHas('badgeInfo', function ($query) use ($search_query) {
+            $query->where('name', 'like', '%' . $search_query . '%');
         })
         ->with('badgeInfo')
         ->paginate(4);
