@@ -28,6 +28,44 @@ class CommonController extends Controller
             ],500);
         } 
     }
+
+    public function searchLabs(Request $request) {
+        try {
+            $user = Auth::user();
+            $query=$request->input('query');
+            if (empty($query)) {
+                return response()->json([
+                    'message' => 'Search query is empty.'
+                ], 400);
+            }
+            $query = Lab::where('name', 'like', '%' . $query . '%')->with('difficultyInfo')->paginate(9);
+            if ($query->isEmpty()) {
+                return response()->json([
+                    'message' => 'No labs with this name.'
+                ], 204);
+            }
+            if ($user->type_id == 3) {
+                foreach ($query as $lab) {
+                    $lab->isActive = ActiveLab::where([['user_id', '=', Auth::id()], ['lab_id', '=', $lab->id]])
+                        ->exists();
+                    $lab->isComplete = CompletedLab::where([['user_id', '=', Auth::id()], ['lab_id', '=', $lab->id]])
+                        ->exists();
+                    $lab->active_lab = ActiveLab::where([['user_id', '=', Auth::id()], ['lab_id', '=', $lab->id]])
+                        ->first();
+                }
+            }
+    
+            return response()->json([
+                'message' => "Labs found.",
+                'labs' => $query
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+    
     public function getLabsInfo(){
         try{
             $labs = Lab::select('id','name')->get();
