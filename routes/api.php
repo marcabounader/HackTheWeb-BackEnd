@@ -47,7 +47,7 @@ Route::group(["middleware" => "auth:api"], function () {
             Route::post('/run-sqli-instance', 'runSqliForUser');
             Route::post('/run-ci-instance','runCommandInjection');
             Route::post('/run-jwt-instance','runInsecureJWT');
-
+            Route::get('/search-badges','searchBadges');
             Route::delete('/stop-user-lab/{project_name}', 'stopUserLab');
             Route::get('/get-active-labs', 'getActiveLabs');
             Route::get('/get-completed-labs', 'getCompletedLabs');
