@@ -59,8 +59,8 @@
 
 ### Watch the Demo Video
 
-[Admin Dashboard](https://youtu.be/jkY2_iAJK6E?si=cV5558tAzSgZJCJ9)
-[Hacker Dashboard](https://youtu.be/jkY2_iAJK6E?si=biYwDniiNF_kVQ-E)
+* [Admin Dashboard](https://youtu.be/jkY2_iAJK6E?si=cV5558tAzSgZJCJ9)
+* [Hacker Dashboard](https://youtu.be/jkY2_iAJK6E?si=biYwDniiNF_kVQ-E)
 
 <br><br>
 
