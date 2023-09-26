@@ -87,21 +87,22 @@ class AdminController extends Controller
     public function searchActiveLabs(Request $request)
     {
         try {
-            $query=$request->input('query');
+            $query = $request->input('query');
             if (empty($query)) {
                 return response()->json([
                     'message' => 'Search query is empty.'
                 ], 400);
             }
             $active_labs = ActiveLab::with('userInfo')
-            ->where(function ($queryBuilder) use ($query) {
-                $queryBuilder
-                    ->whereHas('userInfo', function ($userQuery) use ($query) {
-                        $userQuery->where('name', 'like', '%' . $query . '%');
-                    })
-                    ->orWhere('project_name', 'like', '%' . $query . '%');
-            })
-            ->paginate(5);
+                ->where(function ($queryBuilder) use ($query) {
+                    $queryBuilder
+                        ->whereHas('userInfo', function ($userQuery) use ($query) {
+                            $userQuery->where('name', 'like', '%' . $query . '%')
+                                ->orWhere('email', 'like', '%' . $query . '%'); // Include email search
+                        })
+                        ->orWhere('project_name', 'like', '%' . $query . '%');
+                })
+                ->paginate(5);
             if ($active_labs->isEmpty()) {
                 return response()->json([
                     'message' => 'No active labs'
@@ -118,6 +119,7 @@ class AdminController extends Controller
             ], 500);
         }
     }
+    
     public function restrict($user_id)
     {
         try {
