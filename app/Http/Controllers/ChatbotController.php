@@ -23,7 +23,6 @@ class ChatbotController extends Controller
                 "temperature" => 0.5
             ]);
             $result = str_replace("\n", "", $response->json()['choices'][0]['text']);
-
             return response()->json([
                 'response' => $result
             ], 200);
