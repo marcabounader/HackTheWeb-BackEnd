@@ -72,7 +72,7 @@ class HackerController extends Controller
                 context: ../../../database_admin
                 dockerfile: Dockerfile
             ports:
-              - 127.0.0.1::80
+              - 0.0.0.0::80
             networks:
               - datanet   
               
@@ -85,8 +85,8 @@ class HackerController extends Controller
                   context: ../../../www-sqli
                   dockerfile: Dockerfile
               ports:
-                - 127.0.0.1::80
-                - 127.0.0.1::443
+                - 0.0.0.0::80
+                - 0.0.0.0::443
               networks:
                 - datanet
               environment:
@@ -170,7 +170,7 @@ class HackerController extends Controller
                 context: ../../../database_admin
                 dockerfile: Dockerfile
             ports:
-              - 127.0.0.1::80
+              - 0.0.0.0::80
             networks:
               - datanet   
               
@@ -183,8 +183,8 @@ class HackerController extends Controller
                   context: ../../../www-ci
                   dockerfile: Dockerfile
               ports:
-                - 127.0.0.1::80
-                - 127.0.0.1::443
+                - 0.0.0.0::80
+                - 0.0.0.0::443
               networks:
                 - datanet
               environment:
@@ -269,7 +269,7 @@ class HackerController extends Controller
                 context: ../../../database_admin
                 dockerfile: Dockerfile
             ports:
-              - 127.0.0.1::80
+              - 0.0.0.0::80
             networks:
               - datanet   
               
@@ -282,8 +282,8 @@ class HackerController extends Controller
                   context: ../../../www-jwt
                   dockerfile: Dockerfile
               ports:
-                - 127.0.0.1::80
-                - 127.0.0.1::443
+                - 0.0.0.0::80
+                - 0.0.0.0::443
               networks:
                 - datanet
               environment:

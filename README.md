@@ -59,8 +59,8 @@
 
 ### Watch the Demo Video
 
-* [Admin Dashboard](https://youtu.be/jkY2_iAJK6E?si=cV5558tAzSgZJCJ9)
-* [Hacker Dashboard](https://youtu.be/jkY2_iAJK6E?si=biYwDniiNF_kVQ-E)
+* [Admin Dashboard](https://youtu.be/jkY2_iAJK6E?si=IRRxjGHMwqYWiKXO)
+* [Hacker Dashboard](https://youtu.be/dp3wXYxO8EQ?si=t6Y5F6XPlH4xjKii)
 
 <br><br>
 
@@ -126,7 +126,21 @@
    ```sh
    php artisan migrate --seed
    ```
-9. Run the APP:
+10. Seed the tables with other seeders:
+   ```sh
+   php artisan db:seed --class=UserSeeder
+   ```
+   ```sh
+   php artisan db:seed --class=LabSeeder
+   ```
+   ```sh
+   php artisan db:seed --class=BadgeSeeder
+   ```
+11. Generate JWT secret:
+   ```sh
+   php artisan jwt:secret
+   ```
+12. Run the APP:
    ```sh
    php artisan serve
    ```

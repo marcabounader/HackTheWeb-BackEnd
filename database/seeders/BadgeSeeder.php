@@ -13,7 +13,7 @@ class BadgeSeeder extends Seeder
      */
     public function run(): void
     {
-        $labs = DB::table('labs')->whereNot('id','1')->get();
+        $labs = DB::table('labs')->get();
 
         foreach ($labs as $lab) {
             $categoryId = $lab->id % 3 + 1;
@@ -21,7 +21,7 @@ class BadgeSeeder extends Seeder
             DB::table('badges')->insert([
                 'category_id' => $categoryId, 
                 'name' => 'Badge'.$lab->id,
-                'icon_url' => 'http://localhost:8000/storage/badges/medal-solid.svg',
+                'icon_url' => "http://192.168.1.29:8000/storage/badges/medal-$categoryId.svg",
                 'lab_id' => $lab->id
             ]);
         }
