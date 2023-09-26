@@ -13,7 +13,7 @@ class BadgeSeeder extends Seeder
      */
     public function run(): void
     {
-        $labs = DB::table('labs')->whereNot('id','1')->get();
+        $labs = DB::table('labs')->get();
 
         foreach ($labs as $lab) {
             $categoryId = $lab->id % 3 + 1;
