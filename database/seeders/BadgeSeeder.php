@@ -21,7 +21,7 @@ class BadgeSeeder extends Seeder
             DB::table('badges')->insert([
                 'category_id' => $categoryId, 
                 'name' => 'Badge'.$lab->id,
-                'icon_url' => "http://192.168.1.29:8000/storage/badges/medal-$categoryId.svg",
+                'icon_url' => "http://192.168.1.11:8000/storage/badges/medal-$categoryId.svg",
                 'lab_id' => $lab->id
             ]);
         }
