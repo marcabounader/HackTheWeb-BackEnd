@@ -94,7 +94,7 @@
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/marcabounader92/SEF-Final-FrontEnd.git
+   git clone https://github.com/marcabounader/SEF-Final-FrontEnd.git
    ```
 2. Change base url of helper function according to backend url(\src\helpers):
 3. Install NPM packages
@@ -109,7 +109,7 @@
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/marcabounader92/SEF-Final-BackEnd.git
+   git clone https://github.com/marcabounader/SEF-Final-BackEnd.git
    ```
 2. Install NPM packages
    ```sh
