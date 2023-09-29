@@ -89,11 +89,10 @@ class AdminController extends Controller
         try {
             $query = $request->input('query');
             if (empty($query)) {
-                return response()->json([
-                    'message' => 'Search query is empty.'
-                ], 400);
-            }
-            $active_labs = ActiveLab::with('userInfo')
+                $active_labs = ActiveLab::with('userInfo')
+                ->paginate(5);
+            } else {
+                $active_labs = ActiveLab::with('userInfo')
                 ->where(function ($queryBuilder) use ($query) {
                     $queryBuilder
                         ->whereHas('userInfo', function ($userQuery) use ($query) {
@@ -103,6 +102,7 @@ class AdminController extends Controller
                         ->orWhere('project_name', 'like', '%' . $query . '%');
                 })
                 ->paginate(5);
+            }
             if ($active_labs->isEmpty()) {
                 return response()->json([
                     'message' => 'No active labs'
@@ -608,19 +608,21 @@ class AdminController extends Controller
             $user = Auth::user();
             $query=$request->input('query');
             if (empty($query)) {
-                return response()->json([
-                    'message' => 'Search query is empty.'
-                ], 400);
+                $queryResult = User::
+                where('type_id',3)
+                ->paginate(5);
+            } else {
+                $queryResult = User::where([
+                    ['type_id', '=', 3],
+                    ['name', 'like', '%' . $query . '%']
+                ])
+                ->orWhere([
+                    ['type_id', '=', 3],
+                    ['email', 'like', '%' . $query . '%']
+                ])
+                ->paginate(5);
             }
-            $queryResult = User::where([
-                ['type_id', '=', 3],
-                ['name', 'like', '%' . $query . '%']
-            ])
-            ->orWhere([
-                ['type_id', '=', 3],
-                ['email', 'like', '%' . $query . '%']
-            ])
-            ->paginate(5);
+
             if ($queryResult->isEmpty()) {
                 return response()->json([
                     'message' => 'No users with this name.'

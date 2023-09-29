@@ -34,11 +34,10 @@ class CommonController extends Controller
             $user = Auth::user();
             $query=$request->input('query');
             if (empty($query)) {
-                return response()->json([
-                    'message' => 'Search query is empty.'
-                ], 400);
+                $query = Lab::with('difficultyInfo')->paginate(9);
+            } else{
+                $query = Lab::where('name', 'like', '%' . $query . '%')->with('difficultyInfo')->paginate(9);
             }
-            $query = Lab::where('name', 'like', '%' . $query . '%')->with('difficultyInfo')->paginate(9);
             if ($query->isEmpty()) {
                 return response()->json([
                     'message' => 'No labs with this name.'
@@ -70,11 +69,11 @@ class CommonController extends Controller
         try {
             $query=$request->input('query');
             if (empty($query)) {
-                return response()->json([
-                    'message' => 'Search query is empty.'
-                ], 400);
+                $query = Badge::where('name', 'like', '%' . $query . '%')->paginate(4);
+            } else{
+                $query = Badge::where('name', 'like', '%' . $query . '%')->paginate(4);
+
             }
-            $query = Badge::where('name', 'like', '%' . $query . '%')->paginate(4);
             if ($query->isEmpty()) {
                 return response()->json([
                     'message' => 'No badges with this name.'
