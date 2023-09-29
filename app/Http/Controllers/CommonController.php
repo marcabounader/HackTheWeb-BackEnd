@@ -33,10 +33,11 @@ class CommonController extends Controller
         try {
             $user = Auth::user();
             $query=$request->input('query');
+            $perPage=$request->input('perPage');
             if (empty($query)) {
-                $query = Lab::with('difficultyInfo')->paginate(9);
+                $query = Lab::with('difficultyInfo')->paginate($perPage);
             } else{
-                $query = Lab::where('name', 'like', '%' . $query . '%')->with('difficultyInfo')->paginate(9);
+                $query = Lab::where('name', 'like', '%' . $query . '%')->with('difficultyInfo')->paginate($perPage);
             }
             if ($query->isEmpty()) {
                 return response()->json([
@@ -68,10 +69,11 @@ class CommonController extends Controller
     public function searchBadges(Request $request) {
         try {
             $query=$request->input('query');
+            $perPage=$request->input('perPage');
             if (empty($query)) {
-                $query = Badge::where('name', 'like', '%' . $query . '%')->paginate(4);
+                $query = Badge::where('name', 'like', '%' . $query . '%')->paginate($perPage);
             } else{
-                $query = Badge::where('name', 'like', '%' . $query . '%')->paginate(4);
+                $query = Badge::where('name', 'like', '%' . $query . '%')->paginate($perPage);
 
             }
             if ($query->isEmpty()) {

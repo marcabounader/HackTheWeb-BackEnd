@@ -88,20 +88,21 @@ class AdminController extends Controller
     {
         try {
             $query = $request->input('query');
+            $perPage=$request->input('perPage');
             if (empty($query)) {
                 $active_labs = ActiveLab::with('userInfo')
-                ->paginate(5);
+                ->paginate($perPage);
             } else {
                 $active_labs = ActiveLab::with('userInfo')
                 ->where(function ($queryBuilder) use ($query) {
                     $queryBuilder
                         ->whereHas('userInfo', function ($userQuery) use ($query) {
                             $userQuery->where('name', 'like', '%' . $query . '%')
-                                ->orWhere('email', 'like', '%' . $query . '%'); // Include email search
+                                ->orWhere('email', 'like', '%' . $query . '%');
                         })
                         ->orWhere('project_name', 'like', '%' . $query . '%');
                 })
-                ->paginate(5);
+                ->paginate($perPage);
             }
             if ($active_labs->isEmpty()) {
                 return response()->json([
@@ -164,6 +165,7 @@ class AdminController extends Controller
     public function getUsers()
     {
         try {
+            
             $usersPaginator = User::where('type_id', 3)->paginate(5);
 
             if ($usersPaginator->isEmpty()) {
@@ -607,10 +609,11 @@ class AdminController extends Controller
         try {
             $user = Auth::user();
             $query=$request->input('query');
+            $perPage=$request->input('perPage');
             if (empty($query)) {
                 $queryResult = User::
                 where('type_id',3)
-                ->paginate(5);
+                ->paginate($perPage);
             } else {
                 $queryResult = User::where([
                     ['type_id', '=', 3],
@@ -620,7 +623,7 @@ class AdminController extends Controller
                     ['type_id', '=', 3],
                     ['email', 'like', '%' . $query . '%']
                 ])
-                ->paginate(5);
+                ->paginate($perPage);
             }
 
             if ($queryResult->isEmpty()) {

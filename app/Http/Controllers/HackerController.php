@@ -626,11 +626,12 @@ public function searchBadges(Request $request)
     try {
         $user_id = Auth::id();
         $search_query=$request->input('query');
+        $perPage=$request->input('perPage');
         if (empty($search_query)) {
             $paginated_badges = UserBadge::select(['id', 'badge_id'])
             ->where('user_id', $user_id)
             ->with('badgeInfo')
-            ->paginate(4);
+            ->paginate($perPage);
         } else{
             $paginated_badges = UserBadge::select(['id', 'badge_id'])
             ->where('user_id', $user_id)
@@ -638,7 +639,7 @@ public function searchBadges(Request $request)
                 $query->where('name', 'like', '%' . $search_query . '%');
             })
             ->with('badgeInfo')
-            ->paginate(4);
+            ->paginate($perPage);
         }
 
 
