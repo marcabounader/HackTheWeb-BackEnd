@@ -57,10 +57,10 @@
 | Active Labs screen  | Users Screen | Add Lab Screen |
 | ![Active Labs](./readme/AdminScreens/active-labs.png) | ![Users](./readme/AdminScreens/users.png) | ![Add Lab](./readme/AdminScreens/add-lab.png) |
 
-### Watch the Demo Video
+### Watch Youtube Demos
 
-* [Admin Dashboard](https://youtu.be/jkY2_iAJK6E?si=IRRxjGHMwqYWiKXO)
-* [Hacker Dashboard](https://youtu.be/dp3wXYxO8EQ?si=t6Y5F6XPlH4xjKii)
+* [Admin Dashboard](https://youtu.be/aXHIg-stIlk)
+* [Hacker Dashboard](https://youtu.be/VaY9ahxzs2I)
 
 <br><br>
 
@@ -147,3 +147,8 @@
    ```
 
 Now, you should be able to run HackTheWeb locally and explore its features.
+
+## My Postman Collection
+
+[![Postman Admin Collection](./readme/Postman/HackTheWeb-Admin.postman_collection.json)](./readme/Postman/HackTheWeb-Admin.postman_collection.json)
+[![Postman User Collection](./readme/Postman/HackTheWeb-User.postman_collection.json)](./readme/Postman/HackTheWeb-User.postman_collection.json)
