@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         
-        for ($i = 1; $i <= 19; $i++) {
+        for ($i = 1; $i <= 500; $i++) {
             DB::table('users')->insert([
                 'type_id' => 3,
                 'name' => 'hacker ' . $i,
