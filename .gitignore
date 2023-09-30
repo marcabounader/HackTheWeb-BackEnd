@@ -7,6 +7,7 @@
 /vendor
 /storage/framework
 /storage/logs
+/storage/mutillidae-docker-master/*/user-instances
 
 .env
 .env.backup
