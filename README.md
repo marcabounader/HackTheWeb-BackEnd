@@ -150,5 +150,5 @@ Now, you should be able to run HackTheWeb locally and explore its features.
 
 ## My Postman Collection
 
-[![Postman Admin Collection](./readme/Postman/HackTheWeb-Admin.postman_collection.json)](./readme/Postman/HackTheWeb-Admin.postman_collection.json)
-[![Postman User Collection](./readme/Postman/HackTheWeb-User.postman_collection.json)](./readme/Postman/HackTheWeb-User.postman_collection.json)
+* [Postman Admin Collection](./readme/Postman/HackTheWeb-Admin.postman_collection.json)
+* [Postman User Collection](./readme/Postman/HackTheWeb-User.postman_collection.json)
