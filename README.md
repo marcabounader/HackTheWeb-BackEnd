@@ -101,7 +101,8 @@
    ```sh
    npm install
    ```
-4. Run the APP:
+4. Change the following base URLs in auth.helpers.js: base_url, base_url2.
+5. Run the APP:
    ```sh
    npm run
    ```
@@ -117,7 +118,7 @@
    ```
 4. Run XAMPP and create database named "hackthebox_db"
 5. Build the LAB images using docker-compose. 
-6. Create .env file in root folder of project and change the following variables: DB_HOST, DB_NAME, DB_USERNAME, DB_PASSWORD, CHATGTP_API_KEY, APP_URL.
+6. Create .env file in root folder of project and change the following variables: DB_HOST, DB_NAME, DB_USERNAME, DB_PASSWORD, CHATGTP_API_KEY, APP_URL,APP_IP.
 7. Link the storage:
    ```sh
    php artisan storage:link
