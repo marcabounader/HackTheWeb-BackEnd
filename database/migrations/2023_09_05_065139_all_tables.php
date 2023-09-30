@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('launch_api');
             $table->integer('reward');
             $table->string('icon_url');
+            $table->index('name');
             $table->foreign('category_id')->references('id')->on('lab_categories')->onDelete('cascade');
             $table->foreign('difficulty_id')->references('id')->on('lab_difficulties')->onDelete('cascade');
 
@@ -42,6 +43,9 @@ return new class extends Migration
             $table->string('flag');
             $table->string('project_name');
             $table->integer('port');
+            $table->index('project_name');
+            $table->index('user_id');
+            $table->index('lab_id');
             $table->timestamp('launch_time')->useCurrent();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('lab_id')->references('id')->on('labs')->onDelete('cascade');
@@ -54,6 +58,8 @@ return new class extends Migration
             $table->unsignedBigInteger('lab_id');
             $table->timestamp('complete_time')->useCurrent();
             $table->unique(['user_id', 'lab_id']);
+            $table->index('lab_id');
+            $table->index('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('lab_id')->references('id')->on('labs')->onDelete('cascade');
         });
@@ -69,6 +75,8 @@ return new class extends Migration
             $table->unsignedBigInteger("lab_id")->nullable();
             $table->string('name');
             $table->string('icon_url');
+            $table->index('lab_id');
+            $table->index('name');
             $table->foreign('category_id')->references('id')->on('badge_categories')->onDelete('cascade');
             $table->foreign('lab_id')->references('id')->on('labs')->onDelete('cascade');
         });
@@ -78,7 +86,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('badge_id');
             $table->unique(['user_id', 'badge_id']);
-
+            $table->index('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('badge_id')->references('id')->on('badges')->onDelete('cascade');
 

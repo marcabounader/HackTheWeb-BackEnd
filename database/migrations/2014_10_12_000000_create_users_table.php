@@ -26,7 +26,8 @@ return new class extends Migration
             $table->string('profile_url')->nullable();
             $table->integer('rewards')->nullable();
             $table->boolean('is_restricted')->default(0);
-
+            $table->index('type_id');
+            $table->index('name');
             $table->rememberToken();
             $table->timestamps();
             $table->foreign('type_id')->references('id')->on('user_types');

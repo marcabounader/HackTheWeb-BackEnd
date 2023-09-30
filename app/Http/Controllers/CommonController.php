@@ -71,10 +71,9 @@ class CommonController extends Controller
             $query=$request->input('query');
             $perPage=$request->input('perPage');
             if (empty($query)) {
-                $query = Badge::where('name', 'like', '%' . $query . '%')->paginate($perPage);
+                $query = Badge::paginate($perPage);
             } else{
                 $query = Badge::where('name', 'like', '%' . $query . '%')->paginate($perPage);
-
             }
             if ($query->isEmpty()) {
                 return response()->json([
