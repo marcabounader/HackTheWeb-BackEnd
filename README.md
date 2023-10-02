@@ -9,22 +9,34 @@
 > HackTheWeb's aim is to empower users with the knowledge and skills required to either build robust, secure web applications or to effectively assess their security through penetration testing. Participants will advance through the program by progressively mastering web application attacks, advancing to higher levels upon successful completion. Additionally, an AI chatbot is available to assist users when they encounter challenges at any level, offering valuable information and tips to help them overcome obstacles and progress further.
 
 ### User Stories
+
+#### Students
 - As a student, i want to login to the platform so that i would see the user dashboard.
+- As a student, i want to be able to list all the labs so that i would press the one i am interested in.
+- As a student, i want to be able to restart the lab so that i would be able to implement the attack again
+
+#### Web App Developer
 - As a web app developer, i want to be able to see the ranks of the top hackers so that i would evaluate myself.
+- As a web app developer, i want to view the implementation so that i would be able to securely develop my apps.
+- As a web app developer, i want to be able to alter between levels so that i would implement more advanced attacks. 
+
+#### Penetration Tester
 - As a penetration tester, i want to implement web app attacks on the platform so that i would know how to test it on my company’s application.
+- As a penetration tester, i want to be able to have a score that i would rank between other professionals.
+
+#### SOC Analyst
 - As an SOC analyst, i want to communicate with an AI-driven chatbot so that i would be guided on how to implement the attack.
-- As any user, i want to see details about the attack definition so that i would learn more about web app attacks before implementing.
+- As a SOC analyst, i want to logout from the platform so that i would stop training.
+
+#### DevSecOps Professional
 - As a DevSecOps professional, i want to be able to see the vulnerable code so that i would be able to secure my projects.
-- As a software developer, i want to be able to alter between levels so that i would implement more advanced attacks. 
+- As a DevSecOps professional, i want to see details about the attack definition so that i would learn more about web app attacks before implementing.
+
+#### Admin
 - As an admin, i want to be able to login to the platform so that i would access to admin console.
 - As an admin, i want to be able to perform CRUD operations so that i would manage users.
 - As an admin, i want to be able to perform CRUD operations so that i would manage labs
 - As an admin, i want to be able to perform CRUD operations so that i would manage badges.
-- As a student, i want to be able to list all the labs so that i would press the one i am interested in.
-- As a penetration tester, i want to be able to have a score that i would rank between other professionals.
-- As a student, i want to be able to restart the lab so that i would be able to implement the attack again
-- As a web app developer, i want to view the implementation so that i would be able to securely develop my apps.
-- As a SOC analyst, i want to logout from the platform so that i would stop training.
 
 <br><br>
 
@@ -33,16 +45,21 @@
 
 > We designed HackTheWeb using wireframes and mockups, iterating on the design until we reached the ideal layout for easy navigation and a seamless user experience.
 
-### Wireframes
-| Landing screen | Login modal | Register modal |
-| ---| ---| ---|
-| ![Landing](./readme/Wireframes/Index.png) | ![Login](./readme/Wireframes/login.png) | ![Register](./readme/Wireframes/Register.png) |
-
 ### Mockups
-| Home screen  | Achievements Screen | Labs Screen |
-| ---| ---| ---|
-| ![Home](./readme/Mockups/Home.png) | ![Achievements](./readme/Mockups/Achievements.png) | ![Labs](./readme/Mockups/Labs.png) |
 
+#### Hacker
+| Landing screen  | Home Screen | Badges Screen |
+| ---| ---| ---|
+| ![Landing](./readme/Mockups/Hacker/Index.png) | ![Home](./readme/Mockups/Hacker/Home.png) | ![Badges](./readme/Mockups/Hacker/Achievements.png) |
+| Labs screen  | Active Screen | Lab Modal Screen |
+| ![Active Labs](./readme/Mockups/Hacker/Home.png) | ![Active Labs](./readme/Mockups/Hacker/Active%20Labs.png) | ![Leaderboard](./readme/Mockups/Hacker/Leaderboard.png) |
+
+#### Admin
+| Home screen  | Labs Screen | Active Labs Screen |
+| ---| ---| ---|
+| ![Home](./readme/Mockups/Admin/Home.png) | ![Labs](./readme/Mockups/Admin/Labs.png) | ![Active Labs](./readme/Mockups/Admin/Active%20Labs.png) |
+| Badges screen  | Users Screen | Add Lab Screen |
+| ![Badges](./readme/Mockups/Admin/Badges.png) | ![Users](./readme/Mockups/Admin/Users.png) | ![Add Lab](./readme/Mockups/Admin/Add%20Lab.png) |
 <br><br>
 
 <!-- Implementation -->
