@@ -74,10 +74,20 @@
 | Active Labs screen  | Users Screen | Add Lab Screen |
 | ![Active Labs](./readme/AdminScreens/active-labs.png) | ![Users](./readme/AdminScreens/users.png) | ![Add Lab](./readme/AdminScreens/add-lab.png) |
 
-### Watch Youtube Demos
+<br><br>
 
-* [Admin Dashboard](https://youtu.be/aXHIg-stIlk)
-* [Hacker Dashboard](https://youtu.be/VaY9ahxzs2I)
+<!-- Demo -->
+<img src="./readme/title7.svg"/>
+
+### Hacker
+![Hacker](./readme/hacker.gif)
+
+### Admin
+![Admin](./readme/admin.gif)
+
+### Youtube
+* [Hacker](https://youtu.be/VaY9ahxzs2I)
+* [Admin](https://youtu.be/aXHIg-stIlk)
 
 <br><br>
 
