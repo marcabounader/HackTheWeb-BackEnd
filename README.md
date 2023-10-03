@@ -17,6 +17,8 @@
    1. [Prerequisites](#prerequisites)
    2. [FrontEnd Installation](#frontend-installation)
    3. [BackEnd Installation](#backend-installation)
+   4. [Repository Links](#repo-links)
+
 <br><br>
 
 <!-- project philosophy -->
@@ -226,6 +228,7 @@
    ```
 
 ### Repository Links
+<a name="repo-links"></a>
 - [FrontEnd](https://github.com/marcabounader/HackTheWeb-FrontEnd.git)
 - [BackEnd](https://github.com/marcabounader/HackTheWeb-BackEnd.git)
 - [JWT Lab](https://github.com/marcabounader/mutillidae-jwt.git)
