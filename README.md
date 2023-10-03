@@ -11,7 +11,7 @@
 - [Tech Stack](#teck-stack)
 - [Prototyping](#prototyping)
 - [Demo](#demo)
-- [OpenAi](#OpenAI)
+- [OpenAI](#OpenAI)
 - [Performance](#performance)
 - [How to Run](#how-to-run)
   - [Prerequisites](#prerequisites)
