@@ -5,18 +5,18 @@
 <!-- Table of contents -->
 <img src="./readme/title.svg"/>
 
-- [Project Philosophy](#project-philosophy)
-- [Prototyping](#prototyping)
-- [Implementation](#implementation)
-- [Tech Stack](#teck-stack)
-- [Prototyping](#prototyping)
-- [Demo](#demo)
-- [OpenAI](#OpenAI)
-- [Performance](#performance)
-- [How to Run](#how-to-run)
-  - [Prerequisites](#prerequisites)
-  - [FrontEnd Installation](#frontend-installation)
-  - [BackEnd Installation](#backend-installation)
+1. [Project Philosophy](#project-philosophy)
+2. [Prototyping](#prototyping)
+3. [Implementation](#implementation)
+4. [Tech Stack](#teck-stack)
+5. [Prototyping](#prototyping)
+6. [Demo](#demo)
+7. [OpenAI](#OpenAI)
+8. [Performance](#performance)
+9. [How to Run](#how-to-run)
+   1. [Prerequisites](#prerequisites)
+   2. [FrontEnd Installation](#frontend-installation)
+   3. [BackEnd Installation](#backend-installation)
 <br><br>
 
 <!-- project philosophy -->
