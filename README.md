@@ -2,7 +2,25 @@
 
 <br><br>
 
+<!-- Table of contents -->
+<img src="./readme/title.svg"/>
+
+- [Project Philosophy](#project-philosophy)
+- [Prototyping](#prototyping)
+- [Implementation](#implementation)
+- [Tech Stack](#teck-stack)
+- [Prototyping](#prototyping)
+- [Demo](#demo)
+- [OpenAi](#OpenAI)
+- [Performance](#performance)
+- [How to Run](#how-to-run)
+  - [Prerequisites](#prerequisites)
+  - [FrontEnd Installation](#frontend-installation)
+  - [BackEnd Installation](#backend-installation)
+<br><br>
+
 <!-- project philosophy -->
+<a name="project-philosophy"></a>
 <img src="./readme/title2.svg"/>
 
 > The HackTheWeb platform serves as an educational tool, providing users with a comprehensive understanding of various web application attacks and their practical execution.
@@ -41,6 +59,7 @@
 <br><br>
 
 <!-- Prototyping -->
+<a name="prototyping"></a>
 <img src="./readme/title3.svg"/>
 
 > We designed HackTheWeb using wireframes and mockups, iterating on the design until we reached the ideal layout for easy navigation and a seamless user experience.
@@ -63,6 +82,7 @@
 <br><br>
 
 <!-- Implementation -->
+<a name="implementation"></a>
 <img src="./readme/title4.svg"/>
 
 > Using the wireframes and mockups as a guide, we implemented the HackTheWeb app with the following features:
@@ -76,8 +96,23 @@
 
 <br><br>
 
+<!-- Tech stack -->
+<a name="teck-stack"></a>
+<img src="./readme/title5.svg"/>
+
+###  HackTheWeb is built using the following technologies:
+
+- This project uses the [React JS](https://legacy.reactjs.org/) library. ReactJS (aka React) is an open-source JavaScript-based user interface library. It is insanely popular in web development communities today. React Native is equally popular among mobile application developers.
+- For persistent storage (database), the app uses [MySQL](https://www.mysql.com/), an open-source relational database management system (RDBMS) that is widely used for storing and managing structured data.
+- This project uses the [Laravel](https://laravel.com/) PHP Framework. Laravel is a powerful and popular open-source PHP framework known for its simplicity and elegance. It simplifies web application development by providing tools and libraries for tasks like routing, authentication, and database management, enabling developers to build robust and maintainable web applications more efficiently.
+- To create isolated labs, the app uses the [Docker](https://www.docker.com/) technology. Docker is a platform that enables developers to create, deploy, and run applications in containers.
+- The app uses the font ["Work Sans"](https://fonts.google.com/specimen/Roboto+Mono) as its main font, and the design of the app adheres to the material design guidelines.
+
+<br><br>
+
 <!-- Demo -->
-<img src="./readme/title7.svg"/>
+<a name="demo"></a>
+<img src="./readme/title6.svg"/>
 
 ### Hacker
 ![Hacker](./readme/hacker.gif)
@@ -91,25 +126,41 @@
 
 <br><br>
 
-<!-- Tech stack -->
-<img src="./readme/title5.svg"/>
+<!--Open AI-->
+<a name="OpenAI"></a>
+<img src="./readme/title7.svg"/>
 
-###  HackTheWeb is built using the following technologies:
+### ChatBot Prompt Engineering
+```sh
+   let initialMessage = "This message is being sent using HackTheWeb Assistant to aid the user on how to implement web app attacks.";
+   initialMessage += "\nThe user will be asking questions related to the app.";
+   initialMessage += "\nThe app contains different labs for implementing different web attacks according to OWASP standards.";
+   initialMessage += "\nThe app is using Docker to run instances of OWASP Mutillidae 2.";
+   initialMessage += "\nEach instance is a different attack scenario.";
+   initialMessage += "\nAnswer the question as if you are HackTheWeb Assistant.";
+   initialMessage += "\nThe user is asking the following questions:";
+```
+<br><br>
 
-- This project uses the [React JS](https://legacy.reactjs.org/) library. ReactJS (aka React) is an open-source JavaScript-based user interface library. It is insanely popular in web development communities today. React Native is equally popular among mobile application developers.
-- For persistent storage (database), the app uses [MySQL](https://www.mysql.com/), an open-source relational database management system (RDBMS) that is widely used for storing and managing structured data.
-- This project uses the [Laravel](https://laravel.com/) PHP Framework. Laravel is a powerful and popular open-source PHP framework known for its simplicity and elegance. It simplifies web application development by providing tools and libraries for tasks like routing, authentication, and database management, enabling developers to build robust and maintainable web applications more efficiently.
-- To create isolated labs, the app uses the [Docker](https://www.docker.com/) technology. Docker is a platform that enables developers to create, deploy, and run applications in containers.
-- The app uses the font ["Work Sans"](https://fonts.google.com/specimen/Roboto+Mono) as its main font, and the design of the app adheres to the material design guidelines.
+<!--Performance-->
+<a name="performance"></a>
+<img src="./readme/title8.svg"/>
+
+* [Postman Admin Collection](./readme/Postman/HackTheWeb-Admin.postman_collection.json)
+* [Postman User Collection](./readme/Postman/HackTheWeb-User.postman_collection.json)
 
 <br><br>
 
 <!-- How to run -->
-<img src="./readme/title6.svg"/>
+<a name="how-to-run"></a>
+<img src="./readme/title9.svg"/>
 
 > To set up HackTheWeb locally, follow these steps:
 
+<a name="teck-stack"></a>
+
 ### Prerequisites
+<a name="prerequisites"></a>
 
 * Install Node Js.
 * Install PHP.
@@ -118,7 +169,7 @@
 * Install XAMPP.
 
 ### FrontEnd Installation
-
+<a name="frontend-installation"></a>
 1. Clone the repo
    ```sh
    git clone https://github.com/marcabounader/HackTheWeb-FrontEnd.git
@@ -133,8 +184,9 @@
    ```sh
    npm run
    ```
-### BackEnd Installation
 
+### BackEnd Installation
+<a name="backend-installation"></a>
 1. Clone the repo
    ```sh
    git clone https://github.com/marcabounader/HackTheWeb-BackEnd.git
@@ -174,8 +226,3 @@
    ```
 
 Now, you should be able to run HackTheWeb locally and explore its features.
-
-## My Postman Collection
-
-* [Postman Admin Collection](./readme/Postman/HackTheWeb-Admin.postman_collection.json)
-* [Postman User Collection](./readme/Postman/HackTheWeb-User.postman_collection.json)
