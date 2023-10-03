@@ -18,7 +18,7 @@
    2. [FrontEnd Installation](#frontend-installation)
    3. [BackEnd Installation](#backend-installation)
    4. [Repository Links](#repo-links)
-
+   
 <br><br>
 
 <!-- project philosophy -->
@@ -117,10 +117,18 @@
 <img src="./readme/title6.svg"/>
 
 ### Hacker
-![Hacker](./readme/hacker.gif)
+| Home screen  | Badges screen |
+| ---| ---|
+| ![Home](./readme/GIFs/Hacker/user-1.gif) | ![Badges](./readme/GIFs/Hacker/user-2.gif) |
+| Lab1 screen  | Lab2 screen |
+| ![Labs](./readme/GIFs/Hacker/user-3.gif) | ![Labs](./readme/GIFs/Hacker/user-4.gif) |
 
 ### Admin
-![Admin](./readme/admin.gif)
+| Landing screen  | Home screen |
+| ---| ---|
+| ![Landing](./readme/GIFs/Admin/admin-1.gif) | ![Home](./readme/GIFs/Admin/admin-2.gif) |
+| Badges screen  | Labs screen |
+| ![Badges](./readme/GIFs/Admin/admin-3.gif) | ![Labs](./readme/GIFs/Admin/admin-4.gif) |
 
 ### Youtube
 * [Hacker](https://youtu.be/VaY9ahxzs2I)
