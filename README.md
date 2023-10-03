@@ -225,4 +225,11 @@
    php artisan serve
    ```
 
+### Repository Links
+- [FrontEnd](https://github.com/marcabounader/HackTheWeb-FrontEnd.git)
+- [BackEnd](https://github.com/marcabounader/HackTheWeb-BackEnd.git)
+- [JWT Lab](https://github.com/marcabounader/mutillidae-jwt.git)
+- [Command Injection Lab](https://github.com/marcabounader/mutillidae-ci.git)
+- [SQLi Lab](https://github.com/marcabounader/mutillidae-sqli.git)
+
 Now, you should be able to run HackTheWeb locally and explore its features.
