@@ -121,7 +121,7 @@
 | ---| ---|
 | ![Home](./readme/GIFs/Hacker/user-1.gif) | ![Badges](./readme/GIFs/Hacker/user-2.gif) |
 | Lab1 screen  | Lab2 screen |
-| ![Labs](./readme/GIFs/Hacker/user-3.gif) | ![Labs](./readme/GIFs/Hacker/user-4.gif) |
+| ![Labs1](./readme/GIFs/Hacker/user-3.gif) | ![Labs1](./readme/GIFs/Hacker/user-4.gif) |
 
 ### Admin
 | Landing screen  | Home screen |
